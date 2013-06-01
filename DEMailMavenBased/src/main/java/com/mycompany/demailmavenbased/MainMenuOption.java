@@ -12,9 +12,4 @@ public enum MainMenuOption
     {
         value = valueOption;
     }
-    
-    public int getValue()
-    {
-        return value;
-    }
 }
