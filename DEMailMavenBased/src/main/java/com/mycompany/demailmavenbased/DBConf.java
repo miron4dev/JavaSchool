@@ -7,10 +7,10 @@ import java.sql.SQLException;
 
 public class DBConf {
 
-    static final String url = "jdbc:mysql://localhost/demail";
-    static final String name = "root";
-    static final String password = "root";
-    static Connection connection = null;
+    private static final String url = "jdbc:mysql://localhost/demail";
+    private static final String name = "root";
+    private static final String password = "root";
+    private static Connection connection = null;
     static Statement statement = null;
     
     public static void openCon() 
@@ -37,3 +37,4 @@ public class DBConf {
         }
     }
 }
+
