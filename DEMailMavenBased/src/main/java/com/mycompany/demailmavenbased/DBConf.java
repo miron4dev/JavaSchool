@@ -32,6 +32,7 @@ public class DBConf {
     {
         try{
             connection.close();
+            System.exit(0);
         }catch (SQLException ex){
             ex.printStackTrace();
         }
