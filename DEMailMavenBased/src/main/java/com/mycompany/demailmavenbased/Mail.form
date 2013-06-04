@@ -12,11 +12,17 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Open message"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuOpenMsgActionPerformed"/>
+          </Events>
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="menuReply">
           <Properties>
             <Property name="text" type="java.lang.String" value="Reply"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuReplyActionPerformed"/>
+          </Events>
         </MenuItem>
         <Menu class="javax.swing.JMenu" name="menuSendTo">
           <Properties>
@@ -34,6 +40,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Delete"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuDeleteActionPerformed"/>
+          </Events>
         </MenuItem>
       </SubComponents>
     </Container>
@@ -47,6 +56,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Open"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuOpenFldrActionPerformed"/>
+          </Events>
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="menuNewFldr">
           <Properties>
@@ -179,7 +191,7 @@
                   <Group type="102" attributes="0">
                       <Component id="scrollFolders" min="-2" pref="112" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="scrollTable" min="-2" max="-2" attributes="0"/>
+                      <Component id="scroll" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="buttonMsg" min="-2" pref="115" max="-2" attributes="0"/>
@@ -205,7 +217,7 @@
               <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="scrollFolders" max="32767" attributes="0"/>
-                  <Component id="scrollTable" pref="0" max="32767" attributes="0"/>
+                  <Component id="scroll" pref="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -251,7 +263,7 @@
         <Property name="text" type="java.lang.String" value="Check mail"/>
       </Properties>
     </Component>
-    <Container class="javax.swing.JScrollPane" name="scrollTable">
+    <Container class="javax.swing.JScrollPane" name="scroll">
       <AuxValues>
         <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
       </AuxValues>

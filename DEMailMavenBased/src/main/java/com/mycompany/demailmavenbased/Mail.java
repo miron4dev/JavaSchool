@@ -2,6 +2,7 @@ package com.mycompany.demailmavenbased;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 
@@ -33,7 +34,7 @@ public class Mail extends javax.swing.JFrame {
         folders = new javax.swing.JTree();
         buttonMsg = new javax.swing.JButton();
         buttonCheck = new javax.swing.JButton();
-        scrollTable = new javax.swing.JScrollPane();
+        scroll = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         buttonLgt = new javax.swing.JButton();
         menuCommon = new javax.swing.JMenuBar();
@@ -48,9 +49,19 @@ public class Mail extends javax.swing.JFrame {
         menuAbout = new javax.swing.JMenuItem();
 
         menuOpenMsg.setText("Open message");
+        menuOpenMsg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuOpenMsgActionPerformed(evt);
+            }
+        });
         popupTable.add(menuOpenMsg);
 
         menuReply.setText("Reply");
+        menuReply.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuReplyActionPerformed(evt);
+            }
+        });
         popupTable.add(menuReply);
 
         menuSendTo.setText("Send to...");
@@ -61,9 +72,19 @@ public class Mail extends javax.swing.JFrame {
         popupTable.add(menuSendTo);
 
         menuDelete.setText("Delete");
+        menuDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuDeleteActionPerformed(evt);
+            }
+        });
         popupTable.add(menuDelete);
 
         menuOpenFldr.setText("Open");
+        menuOpenFldr.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuOpenFldrActionPerformed(evt);
+            }
+        });
         popupFolders.add(menuOpenFldr);
 
         menuNewFldr.setText("New folder...");
@@ -159,7 +180,7 @@ public class Mail extends javax.swing.JFrame {
                 tableMouseClicked(evt);
             }
         });
-        scrollTable.setViewportView(table);
+        scroll.setViewportView(table);
 
         buttonLgt.setText("Logout");
         buttonLgt.addActionListener(new java.awt.event.ActionListener() {
@@ -235,7 +256,7 @@ public class Mail extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(scrollFolders, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(scrollTable, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(buttonMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -255,7 +276,7 @@ public class Mail extends javax.swing.JFrame {
                 .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(scrollFolders)
-                    .addComponent(scrollTable, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -287,7 +308,7 @@ public class Mail extends javax.swing.JFrame {
         {
             JTable target = (JTable)evt.getSource();
             int row = target.getSelectedRow();
-            JOptionPane.showMessageDialog(rootPane, "Double-click!");
+            OpenMessage.main(arg);
         }
             
     }//GEN-LAST:event_tableMouseClicked
@@ -390,6 +411,26 @@ public class Mail extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_menuDelFldrActionPerformed
 
+    private void menuOpenFldrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOpenFldrActionPerformed
+        TreePath path = folders.getSelectionPath();
+        MutableTreeNode node =(MutableTreeNode) path.getLastPathComponent();
+    }//GEN-LAST:event_menuOpenFldrActionPerformed
+
+    private void menuOpenMsgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOpenMsgActionPerformed
+        OpenMessage.main(arg);
+    }//GEN-LAST:event_menuOpenMsgActionPerformed
+
+    private void menuReplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReplyActionPerformed
+        NewMessage.main(arg);
+    }//GEN-LAST:event_menuReplyActionPerformed
+
+    private void menuDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDeleteActionPerformed
+        int row = table.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel)table.getModel();
+        model.removeRow(row);
+        table.setModel(model);
+    }//GEN-LAST:event_menuDeleteActionPerformed
+
     public static void main(String args[]) {
         
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -446,8 +487,8 @@ public class Mail extends javax.swing.JFrame {
     private javax.swing.JMenuItem movetoSpam;
     private javax.swing.JPopupMenu popupFolders;
     private javax.swing.JPopupMenu popupTable;
+    private javax.swing.JScrollPane scroll;
     private javax.swing.JScrollPane scrollFolders;
-    private javax.swing.JScrollPane scrollTable;
     private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }
