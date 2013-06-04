@@ -3,38 +3,46 @@ package com.mycompany.demailmavenbased;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
 
-public class NewFolder extends javax.swing.JFrame {
+public class RenameFolder extends javax.swing.JFrame {
 
-    public NewFolder() {
+    public RenameFolder() {
         initComponents();
     }
 
+    private static MutableTreeNode folderName = null;
+    public static void setActionFields(MutableTreeNode folderName)
+    {
+        RenameFolder.folderName = folderName;
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        labelName = new javax.swing.JLabel();
+        buttonRename = new javax.swing.JButton();
         fieldName = new javax.swing.JTextField();
-        buttonCrt = new javax.swing.JButton();
-        buttonCncl = new javax.swing.JButton();
+        labelName = new javax.swing.JLabel();
+        buttonCancel = new javax.swing.JButton();
 
-        setTitle("New Folder");
+        setTitle("Rename Folder");
+        setPreferredSize(new java.awt.Dimension(230, 118));
         setResizable(false);
 
-        labelName.setText("Name:");
-
-        buttonCrt.setText("Create folder");
-        buttonCrt.addActionListener(new java.awt.event.ActionListener() {
+        buttonRename.setText("Rename");
+        buttonRename.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonCrtActionPerformed(evt);
+                buttonRenameActionPerformed(evt);
             }
         });
 
-        buttonCncl.setText("Cancel");
-        buttonCncl.addActionListener(new java.awt.event.ActionListener() {
+        labelName.setText("New Folder Name:");
+
+        buttonCancel.setText("Cancel");
+        buttonCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonCnclActionPerformed(evt);
+                buttonCancelActionPerformed(evt);
             }
         });
 
@@ -49,9 +57,9 @@ public class NewFolder extends javax.swing.JFrame {
                         .addComponent(fieldName)
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(buttonCrt)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                        .addComponent(buttonCncl)
+                        .addComponent(buttonRename, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                        .addComponent(buttonCancel)
                         .addGap(27, 27, 27))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(labelName)
@@ -66,8 +74,8 @@ public class NewFolder extends javax.swing.JFrame {
                 .addComponent(fieldName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonCrt)
-                    .addComponent(buttonCncl))
+                    .addComponent(buttonRename)
+                    .addComponent(buttonCancel))
                 .addGap(5, 5, 5))
         );
 
@@ -75,37 +83,37 @@ public class NewFolder extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void buttonCnclActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCnclActionPerformed
-        setVisible(false);
-    }//GEN-LAST:event_buttonCnclActionPerformed
-
-    private void buttonCrtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCrtActionPerformed
+    private void buttonRenameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRenameActionPerformed
         String name = fieldName.getText();
+        DefaultTreeModel model = (DefaultTreeModel)Mail.folders.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
+        DefaultMutableTreeNode folder = (DefaultMutableTreeNode)model.getChild(root, root.getChildCount()-1);
+        if(Validator.folderExistenceChecking(folder, name) == true)
+        {
+            JOptionPane.showMessageDialog(rootPane, "That folder is already exists.");
+            return;
+        }
+        if(Validator.permitActionChecking(name) == false || Validator.systemFolderChecking(name))
+        {
+            JOptionPane.showMessageDialog(rootPane, "You cannot rename folders to system folder names.");
+            return;
+        }
         if(name.length() > 0)
         {
-            DefaultTreeModel model = (DefaultTreeModel)Mail.folders.getModel();
-            DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
-            DefaultMutableTreeNode folder = (DefaultMutableTreeNode)model.getChild(root, root.getChildCount()-1);
-            if(Validator.folderExistenceChecking(folder, name) == true)
-            {
-                JOptionPane.showMessageDialog(rootPane, "This folder is already exists.");
-                return;
-            }
-            if(Validator.permitActionChecking(name) == false || Validator.systemFolderChecking(name))
-            {
-                JOptionPane.showMessageDialog(rootPane, "You cannot create folders with system folder names.");
-                return;
-            }
-            folder.add(new DefaultMutableTreeNode(name));
+            folderName.setUserObject(new DefaultMutableTreeNode(name));
             model.reload(root);
             for(int i=0;i<Mail.folders.getRowCount();i++)  
             {  
                 Mail.folders.expandRow(i);  
-            }  
-            setVisible(false);
+            }
         }
-        else JOptionPane.showMessageDialog(rootPane, "Folder name cannot be null.");
-    }//GEN-LAST:event_buttonCrtActionPerformed
+        else JOptionPane.showMessageDialog(rootPane, "Folder name cannot be null.");  
+        setVisible(false);
+    }//GEN-LAST:event_buttonRenameActionPerformed
+
+    private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
+        setVisible(false);
+    }//GEN-LAST:event_buttonCancelActionPerformed
 
     public static void main(String args[]) {
         
@@ -121,25 +129,25 @@ public class NewFolder extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewFolder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RenameFolder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewFolder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RenameFolder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewFolder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RenameFolder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewFolder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RenameFolder.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new NewFolder().setVisible(true);
+                new RenameFolder().setVisible(true);
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonCncl;
-    private javax.swing.JButton buttonCrt;
+    private javax.swing.JButton buttonCancel;
+    private javax.swing.JButton buttonRename;
     private javax.swing.JTextField fieldName;
     private javax.swing.JLabel labelName;
     // End of variables declaration//GEN-END:variables

@@ -15,6 +15,7 @@ public class About extends javax.swing.JFrame {
         buttonOK = new javax.swing.JButton();
 
         setTitle("About");
+        setResizable(false);
 
         labelProgram.setFont(new java.awt.Font("DejaVu Sans", 1, 18)); // NOI18N
         labelProgram.setText("DE-Mail Client 1.0 Beta");
