@@ -1,8 +1,8 @@
 package com.mycompany.demailmavenbased;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.persistence.EntityManager;
 import javax.swing.JOptionPane;
+import com.mycompany.demailmavenbased.DAO.LoginDAO;
 
 public class Login extends javax.swing.JFrame {
 
@@ -110,48 +110,15 @@ public class Login extends javax.swing.JFrame {
     private void buttonLgnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLgnActionPerformed
         String username = fieldUName.getText();
         String password = fieldPass.getText();
-        String real_password = "";
-        String userAlert = "", passAlert = "";
-        boolean check = true;
-        String query;
-        ResultSet rs;
-        if(Validator.userNameChecking(username) == false)
-        {
-            userAlert = "Username is invalid.\n";
-            check = false;
-        }
-        if(password.length() <= 6)
-        {
-            passAlert = "Password is too short.\n";
-            check = false;
-        }
-        if(check == false)
-        {
-            JOptionPane.showMessageDialog(rootPane, userAlert + passAlert);
-            return;
-        }
-        query = "select password from Accounts where user='" + username + "'";
-        try
-        {
-            rs = DBConf.statement.executeQuery(query);
-            while(rs.next()){
-                real_password = rs.getString("password");
-            }
-            if(password.equals(real_password))
-            {
-                setVisible(false);
-                Mail.main(arg);
-            }
-            else throw new SQLException();
-        }
-        catch(SQLException ex)
-        {
-            JOptionPane.showMessageDialog(rootPane, "Wrong username or password.");
+        if(LoginDAO.connect(username, password, rootPane) == true){
+            setVisible(false);
+            Mail.main(arg);
         }
     }//GEN-LAST:event_buttonLgnActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        DBConf.closeCon();
+        setVisible(false);
+        App.main(arg);
     }//GEN-LAST:event_formWindowClosing
 
     public static void main(String args[]) {

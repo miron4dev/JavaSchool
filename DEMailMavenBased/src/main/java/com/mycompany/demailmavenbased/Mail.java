@@ -111,14 +111,9 @@ public class Mail extends javax.swing.JFrame {
         });
         popupFolders.add(menuDelFldr);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("DE-Mail Client");
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
-        });
 
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("UserMail");
         javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("DE-Mail");
@@ -161,7 +156,7 @@ public class Mail extends javax.swing.JFrame {
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Test message. Hello world!", "rustock@demail.com", "1994-10-18 23:59:06"}
+                {"Welcome to DEMail", "rustock@demail.com", "1994-10-18 23:59:06"}
             },
             new String [] {
                 "Subject", "From", "Date"
@@ -344,12 +339,8 @@ public class Mail extends javax.swing.JFrame {
     }//GEN-LAST:event_menuLogoutActionPerformed
 
     private void menuQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuQuitActionPerformed
-        DBConf.closeCon();
+        System.exit(0);
     }//GEN-LAST:event_menuQuitActionPerformed
-
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        DBConf.closeCon();
-    }//GEN-LAST:event_formWindowClosing
 
     private void menuNewFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNewFolderActionPerformed
         NewFolder.main(arg);

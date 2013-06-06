@@ -3,7 +3,6 @@ package com.mycompany.demailmavenbased;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeModel;
 
 public class Validator 
 {
@@ -27,7 +26,7 @@ public class Validator
     
     public static boolean phoneChecking(String phone)
     {
-        return regularChecking(phone, "9[0-9]{9}");
+        return regularChecking(phone, "\\+{1}[7]{1}9[0-9]{9}");
     }
     
     public static boolean folderExistenceChecking(DefaultMutableTreeNode folder, String name) 

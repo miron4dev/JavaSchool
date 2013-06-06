@@ -1,8 +1,7 @@
 package com.mycompany.demailmavenbased;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.swing.JOptionPane;
+import java.sql.Date;
+import com.mycompany.demailmavenbased.DAO.RegistrationDAO;
 
 public class Registration extends javax.swing.JFrame {
 
@@ -12,7 +11,7 @@ public class Registration extends javax.swing.JFrame {
     }
     
     private boolean clickBox = false;
-    private String[] arg = {};
+    private final String[] arg = {};
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -215,7 +214,7 @@ public class Registration extends javax.swing.JFrame {
         fieldUName.setText("");
         fieldPass.setText("");
         fieldRTPass.setText("");
-        fieldPhone.setText("+7");
+        fieldPhone.setText("");
     }//GEN-LAST:event_buttonClrActionPerformed
 
     private void buttonCnclActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCnclActionPerformed
@@ -224,99 +223,31 @@ public class Registration extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonCnclActionPerformed
 
     private void buttonSbmtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSbmtActionPerformed
-        String firstname, lastname, user, password, rtpassword, phone, birthday;
+        String firstname, lastname, user, password, rtpassword, phone;
         boolean nameCheck = false, userCheck = false, passCheck = false, rtpassCheck = false, 
                 phoneCheck = false;
-        String nameAlert = "";
-        String userAlert = "";
-        String passAlert = "";
-        String rtpasswordAlert = "";
-        String phoneAlert = "";
-        String agreementAlert = "";
+        Date birthday;
         
         firstname = fieldFName.getText();
         lastname = fieldLName.getText();
         user = fieldUName.getText();
         password = fieldPass.getText();
         rtpassword = fieldRTPass.getText();
-        phone = fieldPhone.getText();
-        birthday = String.valueOf(2013 - boxYears.getSelectedIndex()) + "-" + 
-                   String.valueOf(boxMonths.getSelectedIndex()+1) + "-" +
-                   String.valueOf(boxDays.getSelectedIndex()+1);
-        nameCheck = Validator.nameChecking(firstname) && Validator.nameChecking(lastname);
-        userCheck = Validator.userNameChecking(user);
-        phoneCheck = Validator.phoneChecking(phone);
-        if(password.length() > 6)
-            passCheck = true;
-        if(password.equals(rtpassword))
-            rtpassCheck = true;
-        if ((nameCheck && userCheck && passCheck && rtpassCheck && phoneCheck && clickBox) == false) {
-            if(nameCheck == false)
-                nameAlert = "Firstname and lastname must contain only characters and can not be null.\n";
-            if(userCheck == false)
-                userAlert = "Username must be between 6 and 30 characters and contain only letters (a-z) and numbers.\n";
-            if(passCheck == false)
-                passAlert = "Password must be at least 6 characters.\n";
-            if(rtpassCheck == false)
-                rtpasswordAlert = "Passwords don't match.\n";
-            if(phoneCheck == false)
-                phoneAlert = "Phone number format is not recognized.\n";
-            if(clickBox == false)
-                agreementAlert = "You are not agree with the registration agreement.\n";
-            JOptionPane.showMessageDialog(rootPane, nameAlert + userAlert + passAlert + 
-                    rtpasswordAlert + phoneAlert + agreementAlert);
-        }
-        else {
-            try {
-                String query;
-                int countUser = countQuery(user, "user");
-                int countPhone = countQuery("+7" + phone, "MobilePhone");
-                if(countUser == -1 || countPhone == -1){
-                    return;
-                }
-                if(countUser == 1){
-                    JOptionPane.showMessageDialog(rootPane, "User with that name is already registered.");
-                    return;
-                }
-                if(countPhone == 1){
-                    JOptionPane.showMessageDialog(rootPane, "User with that phone is already registered.");
-                    return;
-                }
-                query = "insert into Accounts (user, password, FirstName, LastName, MobilePhone, BirthDay) values('" + user + "', '"
-                        + password + "', '" + firstname + "', '" + lastname + "', '" + "+7" + 
-                        phone + "', '" + birthday + "')";
-                DBConf.statement.executeUpdate(query);
-                JOptionPane.showMessageDialog(rootPane, "Registration was successful. \nYour new e-mail is " + user + "@demail.com");
-                setVisible(false);
-                App.main(arg);
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(rootPane, "Could not connect to database.");
-            }
+        phone = "+7" + fieldPhone.getText();
+        birthday = new Date(2013 - boxYears.getSelectedIndex() - 1900 , boxMonths.getSelectedIndex(), boxDays.getSelectedIndex()+1);
+        
+        if(RegistrationDAO.submit(user, password, rtpassword, firstname, lastname, phone, birthday, clickBox, rootPane) == true)
+        {
+            setVisible(false);
+            App.main(arg);
         }
     }//GEN-LAST:event_buttonSbmtActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        DBConf.closeCon();
+        setVisible(false);
+        App.main(arg);
     }//GEN-LAST:event_formWindowClosing
 
-    private int countQuery(String row, String param)
-    {
-        try 
-        {
-            String query;
-            ResultSet rs;
-            int count = -1;
-            query = "select count(" + param + ") from Accounts where " + param + "='" + row + "'";
-            rs = DBConf.statement.executeQuery(query);
-            while (rs.next()) {
-                count = rs.getInt("count(" + param+ ")");
-            }
-            return count;
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(rootPane, "Could not connect to database.");
-            return -1;
-        }
-    }
     public static void main(String args[]) {
         
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
