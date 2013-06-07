@@ -2,6 +2,7 @@ package com.mycompany.demailmavenbased;
 
 import java.sql.Date;
 import com.mycompany.demailmavenbased.DAO.RegistrationDAO;
+import javax.swing.JOptionPane;
 
 public class Registration extends javax.swing.JFrame {
 
@@ -235,11 +236,51 @@ public class Registration extends javax.swing.JFrame {
         rtpassword = fieldRTPass.getText();
         phone = "+7" + fieldPhone.getText();
         birthday = new Date(2013 - boxYears.getSelectedIndex() - 1900 , boxMonths.getSelectedIndex(), boxDays.getSelectedIndex()+1);
-        
-        if(RegistrationDAO.submit(user, password, rtpassword, firstname, lastname, phone, birthday, clickBox, rootPane) == true)
+        String nameAlert = "";
+        String userAlert = "";
+        String passAlert = "";
+        String rtpasswordAlert = "";
+        String phoneAlert = "";
+        String agreementAlert = "";
+        nameCheck = Validator.nameChecking(firstname) && Validator.nameChecking(lastname);
+        userCheck = Validator.userNameChecking(user);
+        phoneCheck = Validator.phoneChecking(phone);
+        if (password.length() > 6) {
+            passCheck = true;
+        }
+        if (password.equals(rtpassword)) {
+            rtpassCheck = true;
+        }
+        if ((nameCheck && userCheck && passCheck && rtpassCheck && phoneCheck && clickBox) == false) 
         {
-            setVisible(false);
-            App.main(arg);
+            if (nameCheck == false) {
+                nameAlert = "Firstname and lastname must contain only characters and can not be null.\n";
+            }
+            if (userCheck == false) {
+                userAlert = "Username must be between 6 and 30 characters and contain only letters (a-z) and numbers.\n";
+            }
+            if (passCheck == false) {
+                passAlert = "Password must be at least 6 characters.\n";
+            }
+            if (rtpassCheck == false) {
+                rtpasswordAlert = "Passwords don't match.\n";
+            }
+            if (phoneCheck == false) {
+                phoneAlert = "Phone number format is not recognized.\n";
+            }
+            if (clickBox == false) {
+                agreementAlert = "You are not agree with the registration agreement.\n";
+            }
+            JOptionPane.showMessageDialog(rootPane, nameAlert + userAlert + passAlert
+                    + rtpasswordAlert + phoneAlert + agreementAlert);
+        } 
+        else 
+        {
+            if(RegistrationDAO.submit(user, password, rtpassword, firstname, lastname, phone, birthday, clickBox, rootPane) == true)
+            {
+                setVisible(false);
+                App.main(arg);
+            }
         }
     }//GEN-LAST:event_buttonSbmtActionPerformed
 

@@ -1,6 +1,6 @@
 package com.mycompany.demailmavenbased;
 
-import com.mycompany.demailmavenbased.DAO.RenameFolderDAO;
+import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
@@ -10,13 +10,12 @@ public class RenameFolder extends javax.swing.JFrame {
     public RenameFolder() {
         initComponents();
     }
-
     private static MutableTreeNode folderName = null;
-    public static void setActionFields(MutableTreeNode folderName)
-    {
+
+    public static void setActionFields(MutableTreeNode folderName) {
         RenameFolder.folderName = folderName;
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -85,11 +84,28 @@ public class RenameFolder extends javax.swing.JFrame {
 
     private void buttonRenameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRenameActionPerformed
         String name = fieldName.getText();
-        DefaultTreeModel model = (DefaultTreeModel)Mail.folders.getModel();
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
-        DefaultMutableTreeNode folder = (DefaultMutableTreeNode)model.getChild(root, root.getChildCount()-1);
-        if(RenameFolderDAO.rename(name, folderName, rootPane, model, root, folder) == true)    
+        DefaultTreeModel model = (DefaultTreeModel) Mail.folders.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        DefaultMutableTreeNode folder = (DefaultMutableTreeNode) model.getChild(root, root.getChildCount() - 1);
+        if (Validator.folderExistenceChecking(folder, name) == true) {
+            JOptionPane.showMessageDialog(rootPane, "That folder is already exists.");
+            return;
+        }
+        if (Validator.permitActionChecking(name) == false || Validator.systemFolderChecking(name)) {
+            JOptionPane.showMessageDialog(rootPane, "You cannot rename folders to system folder names.");
+            return;
+        }
+        if (name.length() > 0) {
+            folderName.setUserObject(new DefaultMutableTreeNode(name));
+            model.reload(root);
+            for (int i = 0; i < Mail.folders.getRowCount(); i++) {
+                Mail.folders.expandRow(i);
+            }
             setVisible(false);
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Folder name cannot be null.");
+            return;
+        }
     }//GEN-LAST:event_buttonRenameActionPerformed
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
@@ -97,7 +113,7 @@ public class RenameFolder extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     public static void main(String args[]) {
-        
+
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 

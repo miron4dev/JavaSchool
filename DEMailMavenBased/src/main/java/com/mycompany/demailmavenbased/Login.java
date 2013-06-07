@@ -9,7 +9,6 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
     }
-    
     private final String[] arg = {};
 
     @SuppressWarnings("unchecked")
@@ -110,7 +109,21 @@ public class Login extends javax.swing.JFrame {
     private void buttonLgnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLgnActionPerformed
         String username = fieldUName.getText();
         String password = fieldPass.getText();
-        if(LoginDAO.connect(username, password, rootPane) == true){
+        String userAlert = "", passAlert = "";
+        boolean check = true;
+        if (Validator.userNameChecking(username) == false) {
+            userAlert = "Username is invalid.\n";
+            check = false;
+        }
+        if (password.length() <= 6) {
+            passAlert = "Password is too short.\n";
+            check = false;
+        }
+        if (check == false) {
+            JOptionPane.showMessageDialog(rootPane, userAlert + passAlert);
+            return;
+        }
+        if (LoginDAO.connect(username, password, rootPane) == true) {
             setVisible(false);
             Mail.main(arg);
         }
@@ -122,7 +135,7 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     public static void main(String args[]) {
-        
+
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
