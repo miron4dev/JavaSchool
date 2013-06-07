@@ -1,6 +1,6 @@
 package com.mycompany.demailmavenbased;
 
-import javax.swing.JOptionPane;
+import com.mycompany.demailmavenbased.DAO.RenameFolderDAO;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
@@ -88,27 +88,8 @@ public class RenameFolder extends javax.swing.JFrame {
         DefaultTreeModel model = (DefaultTreeModel)Mail.folders.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
         DefaultMutableTreeNode folder = (DefaultMutableTreeNode)model.getChild(root, root.getChildCount()-1);
-        if(Validator.folderExistenceChecking(folder, name) == true)
-        {
-            JOptionPane.showMessageDialog(rootPane, "That folder is already exists.");
-            return;
-        }
-        if(Validator.permitActionChecking(name) == false || Validator.systemFolderChecking(name))
-        {
-            JOptionPane.showMessageDialog(rootPane, "You cannot rename folders to system folder names.");
-            return;
-        }
-        if(name.length() > 0)
-        {
-            folderName.setUserObject(new DefaultMutableTreeNode(name));
-            model.reload(root);
-            for(int i=0;i<Mail.folders.getRowCount();i++)  
-            {  
-                Mail.folders.expandRow(i);  
-            }
-        }
-        else JOptionPane.showMessageDialog(rootPane, "Folder name cannot be null.");  
-        setVisible(false);
+        if(RenameFolderDAO.rename(name, folderName, rootPane, model, root, folder) == true)    
+            setVisible(false);
     }//GEN-LAST:event_buttonRenameActionPerformed
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed

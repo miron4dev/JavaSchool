@@ -1,7 +1,7 @@
 package com.mycompany.demailmavenbased;
 
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
+import com.mycompany.demailmavenbased.DAO.DeleteFolderDAO;
 
 public class ConfirmDelete extends javax.swing.JFrame {
 
@@ -82,10 +82,7 @@ public class ConfirmDelete extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
-        int index=parent.getIndex(node);
-        parent.remove(node);
-        DefaultTreeModel model=(DefaultTreeModel)Mail.folders.getModel();
-        model.nodesWereRemoved(parent,new int[]{index},null);
+        DeleteFolderDAO.folderRemove(node, parent);
         setVisible(false);
     }//GEN-LAST:event_buttonDeleteActionPerformed
 

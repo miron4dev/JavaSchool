@@ -456,7 +456,7 @@ public class Mail extends javax.swing.JFrame {
     private javax.swing.JButton buttonCheck;
     private javax.swing.JButton buttonLgt;
     private javax.swing.JButton buttonMsg;
-    protected static javax.swing.JTree folders;
+    public static javax.swing.JTree folders;
     private javax.swing.JMenuItem menuAbout;
     private javax.swing.JMenuItem menuCheck;
     private javax.swing.JMenuBar menuCommon;

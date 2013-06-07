@@ -1,8 +1,7 @@
 package com.mycompany.demailmavenbased;
 
+import com.mycompany.demailmavenbased.DAO.NewFolderDAO;
 import javax.swing.JOptionPane;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 
 public class NewFolder extends javax.swing.JFrame {
 
@@ -83,26 +82,8 @@ public class NewFolder extends javax.swing.JFrame {
         String name = fieldName.getText();
         if(name.length() > 0)
         {
-            DefaultTreeModel model = (DefaultTreeModel)Mail.folders.getModel();
-            DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
-            DefaultMutableTreeNode folder = (DefaultMutableTreeNode)model.getChild(root, root.getChildCount()-1);
-            if(Validator.folderExistenceChecking(folder, name) == true)
-            {
-                JOptionPane.showMessageDialog(rootPane, "This folder is already exists.");
-                return;
-            }
-            if(Validator.permitActionChecking(name) == false || Validator.systemFolderChecking(name))
-            {
-                JOptionPane.showMessageDialog(rootPane, "You cannot create folders with system folder names.");
-                return;
-            }
-            folder.add(new DefaultMutableTreeNode(name));
-            model.reload(root);
-            for(int i=0;i<Mail.folders.getRowCount();i++)  
-            {  
-                Mail.folders.expandRow(i);  
-            }  
-            setVisible(false);
+            if(NewFolderDAO.create(name, rootPane) == true)
+                setVisible(false);
         }
         else JOptionPane.showMessageDialog(rootPane, "Folder name cannot be null.");
     }//GEN-LAST:event_buttonCrtActionPerformed
