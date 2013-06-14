@@ -28,56 +28,78 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="labelLName" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="labelUName" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="labelPass" min="-2" max="-2" attributes="0"/>
-                  <Component id="labelFName" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="labelRTPass" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="labelBDay" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="labelPhone" alignment="0" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="field7" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                      <Component id="fieldPhone" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="buttonSbmt" min="-2" pref="74" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="buttonClr" min="-2" pref="76" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                              <Component id="buttonCncl" min="-2" pref="74" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="checkAgr" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="boxMonths" min="-2" pref="110" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="boxDays" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="boxYears" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="labelLName" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelFName" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelUName" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelPhone" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="fieldPhone" min="-2" pref="206" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="fieldFName" alignment="1" max="32767" attributes="0"/>
+                                          <Component id="fieldLName" max="32767" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <Component id="fieldUName" max="32767" attributes="0"/>
+                                              <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                                              <Component id="fieldDEMail" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
+                                  </Group>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="labelRTPass" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelBDay" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="labelPass" alignment="0" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Component id="field7" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Component id="fieldRTPass" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="boxMonths" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="boxDays" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="boxYears" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="fieldPass" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
                   </Group>
-                  <Component id="fieldRTPass" alignment="0" max="32767" attributes="0"/>
-                  <Component id="fieldPass" alignment="0" max="32767" attributes="0"/>
-                  <Group type="102" attributes="0">
-                      <Component id="fieldUName" max="32767" attributes="0"/>
-                      <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                      <Component id="fieldEMail" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="fieldLName" max="32767" attributes="0"/>
-                  <Component id="fieldFName" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="buttonSbmt" min="-2" pref="74" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="buttonClr" min="-2" pref="76" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
-                      <Component id="buttonCncl" min="-2" pref="74" max="-2" attributes="0"/>
-                  </Group>
-                  <Component id="checkAgr" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -94,13 +116,19 @@
                   <Component id="fieldLName" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="labelLName" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="fieldUName" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="labelUName" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="fieldEMail" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="fieldUName" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="fieldDEMail" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+              <EmptySpace pref="11" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="fieldPhone" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="labelPhone" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="field7" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="labelPass" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="fieldPass" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -117,12 +145,6 @@
                   <Component id="boxDays" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="boxYears" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="fieldPhone" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="labelPhone" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="field7" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="checkAgr" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -131,7 +153,7 @@
                   <Component id="buttonClr" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="buttonCncl" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -179,8 +201,6 @@
     </Component>
     <Component class="javax.swing.JTextField" name="fieldLName">
     </Component>
-    <Component class="javax.swing.JTextField" name="fieldUName">
-    </Component>
     <Component class="javax.swing.JLabel" name="labelFName">
       <Properties>
         <Property name="text" type="java.lang.String" value="First Name:"/>
@@ -189,11 +209,6 @@
     <Component class="javax.swing.JLabel" name="labelLName">
       <Properties>
         <Property name="text" type="java.lang.String" value="Last Name:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="labelUName">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="User:"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="labelPass">
@@ -247,13 +262,6 @@
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
         <Property name="text" type="java.lang.String" value="+7"/>
-        <Property name="enabled" type="boolean" value="false"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="fieldEMail">
-      <Properties>
-        <Property name="editable" type="boolean" value="false"/>
-        <Property name="text" type="java.lang.String" value="@demail.com"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
@@ -416,6 +424,20 @@
             <StringItem index="113" value="1900"/>
           </StringArray>
         </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelUName">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Username:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="fieldUName">
+    </Component>
+    <Component class="javax.swing.JTextField" name="fieldDEMail">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+        <Property name="text" type="java.lang.String" value="@demail.com"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
   </SubComponents>

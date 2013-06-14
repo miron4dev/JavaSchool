@@ -1,11 +1,11 @@
 package com.tsystems.demail.client;
 
-import java.io.IOException;
+import com.tsystems.demail.client.Profile.LoginProfile;
+import com.tsystems.demail.client.Profile.RegistrationProfile;
 
 public class App extends javax.swing.JFrame {
 
     private final String[] arg = {};
-    private static boolean connected = false;
     
     public App(){
         
@@ -101,7 +101,7 @@ public class App extends javax.swing.JFrame {
 
     private void buttonRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRegActionPerformed
         setVisible(false);
-        Registration.main(arg);
+        RegistrationProfile.main(arg);
     }//GEN-LAST:event_buttonRegActionPerformed
 
     private void buttonExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonExitActionPerformed
@@ -110,7 +110,7 @@ public class App extends javax.swing.JFrame {
 
     private void buttonSignInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSignInActionPerformed
         setVisible(false);
-        Login.main(arg);
+        LoginProfile.main(arg);
     }//GEN-LAST:event_buttonSignInActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing

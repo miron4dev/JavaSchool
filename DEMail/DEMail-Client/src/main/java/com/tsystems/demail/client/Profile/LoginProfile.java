@@ -1,12 +1,16 @@
-package com.tsystems.demail.client;
+package com.tsystems.demail.client.Profile;
 
+import com.tsystems.demail.client.App;
+import com.tsystems.demail.client.Client;
+import com.tsystems.demail.client.Validator;
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 
-public class Login extends javax.swing.JFrame {
+public class LoginProfile extends javax.swing.JFrame {
 
-    public Login() {
+    public LoginProfile() {
         initComponents();
     }
     private final String[] arg = {};
@@ -16,12 +20,12 @@ public class Login extends javax.swing.JFrame {
     private void initComponents() {
 
         fieldPass = new javax.swing.JPasswordField();
-        fieldUName = new javax.swing.JTextField();
+        fieldMPhone = new javax.swing.JTextField();
         buttonLgn = new javax.swing.JButton();
         buttonCncl = new javax.swing.JButton();
-        labelUName = new javax.swing.JLabel();
+        labelMPhone = new javax.swing.JLabel();
         labalPass = new javax.swing.JLabel();
-        fieldMail = new javax.swing.JTextField();
+        field7 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Login to service");
@@ -46,46 +50,47 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        labelUName.setText("Username:");
+        labelMPhone.setText("Mobile Phone:");
 
         labalPass.setText("Password:");
 
-        fieldMail.setEditable(false);
-        fieldMail.setText("@demail.com");
-        fieldMail.setEnabled(false);
+        field7.setEditable(false);
+        field7.setText("+7");
+        field7.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 35, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(26, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labelUName, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(labalPass, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(fieldUName, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(1, 1, 1)
-                        .addComponent(fieldMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(fieldPass))
-                .addContainerGap(17, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(buttonLgn, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
-                .addComponent(buttonCncl, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(buttonLgn, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(buttonCncl, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(54, 54, 54))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelMPhone, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(labalPass, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(fieldPass, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(field7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(1, 1, 1)
+                                .addComponent(fieldMPhone, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(23, 23, 23))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(fieldUName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelUName)
-                    .addComponent(fieldMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(fieldMPhone, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(labelMPhone)
+                    .addComponent(field7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fieldPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -107,12 +112,12 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonCnclActionPerformed
 
     private void buttonLgnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLgnActionPerformed
-        String username = fieldUName.getText();
+        String phone = "+7" + fieldMPhone.getText();
         String password = fieldPass.getText();
-        String userAlert = "", passAlert = "";
+        String phoneAlert = "", passAlert = "";
         boolean check = true;
-        if (Validator.userNameChecking(username) == false) {
-            userAlert = "Username is invalid.\n";
+        if (Validator.phoneChecking(phone) == false) {
+            phoneAlert = "Mobile phone is invalid.\n";
             check = false;
         }
         if (password.length() <= 6) {
@@ -120,21 +125,24 @@ public class Login extends javax.swing.JFrame {
             check = false;
         }
         if (check == false) {
-            JOptionPane.showMessageDialog(rootPane, userAlert + passAlert);
+            JOptionPane.showMessageDialog(rootPane, phoneAlert + passAlert);
             return;
         }
         Properties data = new Properties();
-        data.setProperty("KEY", "LOG");
-        data.setProperty("USERNAME", username);
+        data.setProperty("KEY", "LOG_PROFILE");
+        data.setProperty("PHONE", phone);
         data.setProperty("PASSWORD", password);
         try {
-            if (Client.getAnswer(data) == true) {
+            List list = Client.getList(data);
+            if (list.get(0).toString().equals("false") == false) {
                 setVisible(false);
-                Mail.main(arg);
+                Object[] obj1 = (Object[]) list.get(0);
+                MailChooser choose = new MailChooser(obj1[0].toString() , obj1[1].toString(), obj1[2].toString(), obj1[3].toString());
+                choose.setVisible(true);
             }
             else
             {
-                JOptionPane.showMessageDialog(rootPane, "Incorrect user name or password.");
+                JOptionPane.showMessageDialog(rootPane, "Incorrect mobile phone or password.");
                 return;
             }
         } catch (IOException ex) {
@@ -163,29 +171,29 @@ public class Login extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginProfile.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Login().setVisible(true);
+                new LoginProfile().setVisible(true);
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonCncl;
     private javax.swing.JButton buttonLgn;
-    private javax.swing.JTextField fieldMail;
+    private javax.swing.JTextField field7;
+    private javax.swing.JTextField fieldMPhone;
     private javax.swing.JPasswordField fieldPass;
-    private javax.swing.JTextField fieldUName;
     private javax.swing.JLabel labalPass;
-    private javax.swing.JLabel labelUName;
+    private javax.swing.JLabel labelMPhone;
     // End of variables declaration//GEN-END:variables
 }

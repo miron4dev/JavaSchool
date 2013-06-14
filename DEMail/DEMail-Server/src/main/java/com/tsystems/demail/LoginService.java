@@ -5,7 +5,7 @@ import javax.persistence.NoResultException;
 
 public class LoginService {
 
-    public static boolean connect(String username, String password) 
+    public static boolean connect(String phone, String password) 
     {
         EntityManager em = Server.emf.createEntityManager();
         em.getTransaction().begin();
@@ -13,7 +13,7 @@ public class LoginService {
         {
             String real_password;
         
-            real_password = em.createNativeQuery("select password from Accounts where user='" + username + "'").getSingleResult().toString();
+            real_password = em.createNativeQuery("select password from Accounts where mobile_phone='" + phone + "'").getSingleResult().toString();
 
             if (password.equals(real_password)) {
                 return true;

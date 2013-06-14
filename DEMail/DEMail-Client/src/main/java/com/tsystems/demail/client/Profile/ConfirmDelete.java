@@ -1,16 +1,13 @@
-package com.tsystems.demail.client;
+package com.tsystems.demail.client.Profile;
 
+import com.tsystems.demail.client.Client;
+import java.io.IOException;
 import java.util.Properties;
-import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 
 public class ConfirmDelete extends javax.swing.JFrame {
 
-    private static String foldername, username;
-
-    public static void setFoldername(String aFoldername) {
-        foldername = aFoldername;
-    }
+    private static String username;
+    private static final String[] arg = {};
 
     public static void setUsername(String aUsername) {
         username = aUsername;
@@ -18,15 +15,6 @@ public class ConfirmDelete extends javax.swing.JFrame {
     
     public ConfirmDelete() {
         initComponents();
-    }
-    
-    private static MutableTreeNode node = null;
-    private static MutableTreeNode parent = null;
-    
-    public static void setActionFields(MutableTreeNode node, MutableTreeNode parent)
-    {
-        ConfirmDelete.node = node;
-        ConfirmDelete.parent = parent;
     }
 
     @SuppressWarnings("unchecked")
@@ -37,10 +25,11 @@ public class ConfirmDelete extends javax.swing.JFrame {
         buttonCancel = new javax.swing.JButton();
         labelConfirm = new javax.swing.JLabel();
 
-        setTitle("Delete Folder");
+        setTitle("Delete Mail");
+        setPreferredSize(new java.awt.Dimension(323, 88));
         setResizable(false);
 
-        buttonDelete.setText("Delete Folder");
+        buttonDelete.setText("Delete Mail");
         buttonDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonDeleteActionPerformed(evt);
@@ -60,21 +49,22 @@ public class ConfirmDelete extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(29, Short.MAX_VALUE)
-                .addComponent(labelConfirm)
-                .addGap(23, 23, 23))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(buttonDelete)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(buttonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(80, 80, 80)
+                        .addComponent(buttonDelete)
+                        .addGap(38, 38, 38)
+                        .addComponent(buttonCancel))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(labelConfirm)))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
+                .addContainerGap(33, Short.MAX_VALUE)
                 .addComponent(labelConfirm)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -87,22 +77,18 @@ public class ConfirmDelete extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
+        Properties data = new Properties();
+        data.setProperty("KEY", "DELETE_MAIL");
+        data.setProperty("USERNAME", username);
+        Client.sendAction(data);
+        setVisible(false);
+        MailChooser.main(arg);
+    }//GEN-LAST:event_buttonDeleteActionPerformed
+
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
         setVisible(false);
     }//GEN-LAST:event_buttonCancelActionPerformed
-
-    private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
-        int index=parent.getIndex(node);
-        parent.remove(node);
-        DefaultTreeModel model=(DefaultTreeModel)Mail.folders.getModel();
-        model.nodesWereRemoved(parent,new int[]{index},null);
-        Properties p = new Properties();
-        p.setProperty("KEY", "DEL_FOLDER");
-        p.setProperty("USERNAME", username);
-        p.setProperty("FOLDERNAME", foldername);
-        Client.sendAction(p);
-        setVisible(false);
-    }//GEN-LAST:event_buttonDeleteActionPerformed
 
     public static void main(String args[]) {
         

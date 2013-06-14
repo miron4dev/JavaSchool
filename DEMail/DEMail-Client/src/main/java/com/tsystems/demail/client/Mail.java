@@ -1,20 +1,32 @@
 package com.tsystems.demail.client;
 
+import com.tsystems.demail.client.Profile.MailChooser;
+import java.io.IOException;
+import java.util.List;
+import java.util.Properties;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 
 public class Mail extends javax.swing.JFrame {
 
-    public Mail() {
+
+    private final String[] arg = {};
+    private static String username;
+    private static List list;
+    private static Object[][] forTable;
+    
+    public Mail(String username, List list, Object[][] forTable) {
+        Mail.username = username;
+        Mail.list = list;
+        Mail.forTable = forTable;
         initComponents();
     }
-    
-    private final String[] arg = {};
-    private static String userMail = "";
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -22,8 +34,7 @@ public class Mail extends javax.swing.JFrame {
         popupTable = new javax.swing.JPopupMenu();
         menuOpenMsg = new javax.swing.JMenuItem();
         menuReply = new javax.swing.JMenuItem();
-        menuSendTo = new javax.swing.JMenu();
-        movetoSpam = new javax.swing.JMenuItem();
+        menuMoveTo = new javax.swing.JMenuItem();
         menuDelete = new javax.swing.JMenuItem();
         popupFolders = new javax.swing.JPopupMenu();
         menuOpenFldr = new javax.swing.JMenuItem();
@@ -64,12 +75,13 @@ public class Mail extends javax.swing.JFrame {
         });
         popupTable.add(menuReply);
 
-        menuSendTo.setText("Send to...");
-
-        movetoSpam.setText("Spam");
-        menuSendTo.add(movetoSpam);
-
-        popupTable.add(menuSendTo);
+        menuMoveTo.setText("Move to...");
+        menuMoveTo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuMoveToActionPerformed(evt);
+            }
+        });
+        popupTable.add(menuMoveTo);
 
         menuDelete.setText("Delete");
         menuDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -133,15 +145,16 @@ public class Mail extends javax.swing.JFrame {
         treeNode2.add(treeNode3);
         treeNode1.add(treeNode2);
         folders.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
-        folders.setShowsRootHandles(false);
+        folders.setShowsRootHandles(true);
         folders.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 foldersMouseClicked(evt);
             }
         });
         scrollFolders.setViewportView(folders);
-        for(int i=0;i<folders.getRowCount();i++)
-        {
+        if(list != null)
+        setFolderList();
+        for(int i=0;i<folders.getRowCount();i++){
             folders.expandRow(i);
         }
 
@@ -155,9 +168,7 @@ public class Mail extends javax.swing.JFrame {
         buttonCheck.setText("Check mail");
 
         table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {"Welcome to DEMail", "rustock@demail.com", "1994-10-18 23:59:06"}
-            },
+            forTable,
             new String [] {
                 "Subject", "From", "Date"
             }
@@ -249,8 +260,8 @@ public class Mail extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(scrollFolders, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(scrollFolders, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(buttonMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -258,7 +269,7 @@ public class Mail extends javax.swing.JFrame {
                         .addComponent(buttonCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(12, 12, 12)
                         .addComponent(buttonLgt, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -281,7 +292,7 @@ public class Mail extends javax.swing.JFrame {
 
     private void buttonLgtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLgtActionPerformed
         setVisible(false);
-        App.main(arg);
+        MailChooser.main(arg);
     }//GEN-LAST:event_buttonLgtActionPerformed
 
     private void buttonMsgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMsgActionPerformed
@@ -343,10 +354,12 @@ public class Mail extends javax.swing.JFrame {
     }//GEN-LAST:event_menuQuitActionPerformed
 
     private void menuNewFolderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNewFolderActionPerformed
+        NewFolder.setUsername(username);
         NewFolder.main(arg);
     }//GEN-LAST:event_menuNewFolderActionPerformed
 
     private void menuNewFldrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNewFldrActionPerformed
+        NewFolder.setUsername(username);
         NewFolder.main(arg);
     }//GEN-LAST:event_menuNewFldrActionPerformed
 
@@ -357,6 +370,7 @@ public class Mail extends javax.swing.JFrame {
             if(path != null)
             {
                 MutableTreeNode node =(MutableTreeNode) path.getLastPathComponent();
+                String foldername = path.getLastPathComponent().toString();
                 MutableTreeNode parent=(MutableTreeNode)node.getParent();
                 if(Validator.permitActionChecking(node.toString()) == false)
                 {
@@ -366,6 +380,8 @@ public class Mail extends javax.swing.JFrame {
                 {
                     return ;
                 }
+                RenameFolder.setCurrentFolderName(foldername);
+                RenameFolder.setUsername(username);
                 RenameFolder.setActionFields(node);
                 RenameFolder.main(arg);
             }
@@ -383,6 +399,7 @@ public class Mail extends javax.swing.JFrame {
             if(path != null)
             {
                 MutableTreeNode node =(MutableTreeNode) path.getLastPathComponent();
+                String foldername = path.getLastPathComponent().toString();
                 MutableTreeNode parent=(MutableTreeNode)node.getParent();
                 if(Validator.permitActionChecking(node.toString()) == false)
                 {
@@ -392,6 +409,8 @@ public class Mail extends javax.swing.JFrame {
                 {
                     return ;
                 }
+                ConfirmDelete.setUsername(username);
+                ConfirmDelete.setFoldername(foldername);
                 ConfirmDelete.setActionFields(node, parent);
                 ConfirmDelete.main(arg);
             }
@@ -422,6 +441,35 @@ public class Mail extends javax.swing.JFrame {
         table.setModel(model);
     }//GEN-LAST:event_menuDeleteActionPerformed
 
+    private void menuMoveToActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuMoveToActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuMoveToActionPerformed
+
+    public final void setFolderList(){
+        DefaultTreeModel model = (DefaultTreeModel) folders.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
+        DefaultMutableTreeNode folder = (DefaultMutableTreeNode) model.getChild(root, root.getChildCount() - 1);
+        for(int i = 0; i < list.size(); i++)
+            folder.add(new DefaultMutableTreeNode(list.get(i)));
+        
+        model.reload(root);
+    }
+    
+    public static Object[][] getMessageList() throws IOException, ClassNotFoundException{
+            Properties p2 = new Properties();
+            p2.setProperty("KEY", "GET_MESSAGES");
+            p2.setProperty("USERNAME", username);
+            List<Object[]> messages = Client.getList(p2);
+            Object[][] arrayOfMessages = new Object[messages.size()][];
+            arrayOfMessages=messages.toArray(arrayOfMessages);
+            Object[][] result = new Object[messages.size()][3];
+            for(int i = 0; i < messages.size(); i++){
+                for(int j = 0; j < 3; j++){
+                    result[i][j] = arrayOfMessages[i][j].toString();
+                }
+            }
+            return result;
+    }
     public static void main(String args[]) {
         
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -448,7 +496,7 @@ public class Mail extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Mail().setVisible(true);
+                new Mail(username, list, forTable).setVisible(true);
             }
         });
     }
@@ -465,6 +513,7 @@ public class Mail extends javax.swing.JFrame {
     private javax.swing.JMenu menuFile;
     private javax.swing.JMenu menuHelp;
     private javax.swing.JMenuItem menuLogout;
+    private javax.swing.JMenuItem menuMoveTo;
     private javax.swing.JMenu menuNew;
     private javax.swing.JMenuItem menuNewFldr;
     private javax.swing.JMenuItem menuNewFolder;
@@ -474,8 +523,6 @@ public class Mail extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuQuit;
     private javax.swing.JMenuItem menuRenFldr;
     private javax.swing.JMenuItem menuReply;
-    private javax.swing.JMenu menuSendTo;
-    private javax.swing.JMenuItem movetoSpam;
     private javax.swing.JPopupMenu popupFolders;
     private javax.swing.JPopupMenu popupTable;
     private javax.swing.JScrollPane scroll;

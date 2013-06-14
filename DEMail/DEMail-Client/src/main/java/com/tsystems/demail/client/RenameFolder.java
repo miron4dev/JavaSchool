@@ -1,5 +1,6 @@
 package com.tsystems.demail.client;
 
+import java.util.Properties;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -11,9 +12,19 @@ public class RenameFolder extends javax.swing.JFrame {
         initComponents();
     }
     private static MutableTreeNode folderName = null;
-
+    private static String currentFolderName;
+    private static String username;
+    
     public static void setActionFields(MutableTreeNode folderName) {
         RenameFolder.folderName = folderName;
+    }
+    
+    public static void setCurrentFolderName(String aCurrentFolderName) {
+        currentFolderName = aCurrentFolderName;
+    }
+
+    public static void setUsername(String aUsername) {
+        username = aUsername;
     }
 
     @SuppressWarnings("unchecked")
@@ -26,7 +37,6 @@ public class RenameFolder extends javax.swing.JFrame {
         buttonCancel = new javax.swing.JButton();
 
         setTitle("Rename Folder");
-        setPreferredSize(new java.awt.Dimension(230, 118));
         setResizable(false);
 
         buttonRename.setText("Rename");
@@ -97,6 +107,12 @@ public class RenameFolder extends javax.swing.JFrame {
         }
         if (name.length() > 0) {
             folderName.setUserObject(new DefaultMutableTreeNode(name));
+            Properties p = new Properties();
+            p.setProperty("KEY", "REN_FOLDER");
+            p.setProperty("USERNAME", username);
+            p.setProperty("FOLDERNAME", currentFolderName);
+            p.setProperty("NEWFOLDERNAME", name);
+            Client.sendAction(p);
             model.reload(root);
             for (int i = 0; i < Mail.folders.getRowCount(); i++) {
                 Mail.folders.expandRow(i);

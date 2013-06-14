@@ -1,11 +1,18 @@
 package com.tsystems.demail.client;
 
+import java.util.Properties;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 public class NewFolder extends javax.swing.JFrame {
 
+    private static String username;
+
+    public static void setUsername(String aUsername) {
+        username = aUsername;
+    }
+    
     public NewFolder() {
         initComponents();
     }
@@ -93,6 +100,11 @@ public class NewFolder extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(rootPane, "You cannot create folders with system folder names.");
                 return;
             }
+            Properties p = new Properties();
+            p.setProperty("KEY", "NEW_FOLDER");
+            p.setProperty("USERNAME", username);
+            p.setProperty("FOLDERNAME", name);
+            Client.sendAction(p);
             folder.add(new DefaultMutableTreeNode(name));
             model.reload(root);
             for (int i = 0; i < Mail.folders.getRowCount(); i++) {
