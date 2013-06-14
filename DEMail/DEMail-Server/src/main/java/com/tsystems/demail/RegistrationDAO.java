@@ -38,7 +38,7 @@ public class RegistrationDAO {
         em.persist(spam);
         em.persist(trash);
         em.persist(priority);
-        Messages mess = new Messages(inbox.getId(), mails.getId(), "admin@demail.com", username, "Welcome to DEMail", mails.getRegistration_date(), "Welcome to DEMail.\nIt is first message.");
+        Messages mess = new Messages(inbox.getId(), mails.getId(), "DEMAIL", username, "Welcome to DEMail", mails.getRegistration_date(), "Welcome to DEMail.\nIt is first message.");
         em.persist(mess);
         em.persist(mails);
         em.getTransaction().commit();

@@ -1,15 +1,19 @@
 package com.tsystems.demail.client;
 
+import javax.swing.JOptionPane;
+
 public class OpenMessage extends javax.swing.JFrame {
 
     private static String from, to, date, text, subject;
+    private static int row;
     
-    public OpenMessage(String from, String to, String date, String text, String subject) {
+    public OpenMessage(String from, String to, String date, String text, String subject, int row) {
         OpenMessage.from = from;
         OpenMessage.to = to;
         OpenMessage.date = date;
         OpenMessage.text = text;
         OpenMessage.subject = subject;
+        OpenMessage.row = row;
         initComponents();
     }
 
@@ -42,6 +46,11 @@ public class OpenMessage extends javax.swing.JFrame {
         labelDate.setText("Date");
 
         buttonDelete.setText("Delete");
+        buttonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDeleteActionPerformed(evt);
+            }
+        });
 
         areaMsg.setColumns(20);
         areaMsg.setRows(5);
@@ -133,8 +142,19 @@ public class OpenMessage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonReplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonReplyActionPerformed
-        NewMessage.main(arg);
+        if(from.equals("DEMAIL") == true){
+            JOptionPane.showMessageDialog(rootPane, "You cannot reply for that message.");
+        }
+        else{
+            NewMessage newm = new NewMessage(to, from.substring(0, from.indexOf("@")), "Re: " + subject);
+            newm.setVisible(true);
+        }
     }//GEN-LAST:event_buttonReplyActionPerformed
+
+    private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
+        Mail.deleteMessage(row);
+        setVisible(false);
+    }//GEN-LAST:event_buttonDeleteActionPerformed
 
     public static void main(String args[]) {
         
@@ -162,7 +182,7 @@ public class OpenMessage extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new OpenMessage(from, to, date, text, subject).setVisible(true);
+                new OpenMessage(from, to, date, text, subject, row).setVisible(true);
             }
         });
     }

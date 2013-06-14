@@ -142,18 +142,8 @@ public class MailChooser extends javax.swing.JFrame {
             p1.setProperty("KEY", "GET_FOLDERS");
             p1.setProperty("USERNAME", boxList.getSelectedItem().toString());
             List folders = Client.getList(p1);
-            Properties p2 = new Properties();
-            p2.setProperty("KEY", "GET_MESSAGES");
-            p2.setProperty("USERNAME", boxList.getSelectedItem().toString());
-            List<Object[]> messages = Client.getList(p2);
-            Object[][] arrayOfMessages = new Object[messages.size()][];
-            arrayOfMessages=messages.toArray(arrayOfMessages);
-            Object[][] forTable = new Object[messages.size()][3];
-            for(int i = 0; i < messages.size(); i++){
-                for(int j = 0; j < 3; j++){
-                    forTable[i][j] = arrayOfMessages[i][j].toString();
-                }
-            }
+            Object[][] forTable = Mail.getForTableList(boxList.getSelectedItem().toString(), "Inbox");
+            Object[][] arrayOfMessages = Mail.getMessagesList(boxList.getSelectedItem().toString(), "Inbox");
             setVisible(false);
             Mail client = new Mail(boxList.getSelectedItem().toString(), folders.subList(6, folders.size()), forTable, arrayOfMessages);
             client.setVisible(true);

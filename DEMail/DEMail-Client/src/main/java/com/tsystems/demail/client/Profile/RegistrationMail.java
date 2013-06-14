@@ -116,6 +116,7 @@ public class RegistrationMail extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         setVisible(false);
+        MailChooser.main(arg);
     }//GEN-LAST:event_formWindowClosing
 
     private void buttonRegActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRegActionPerformed

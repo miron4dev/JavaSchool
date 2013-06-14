@@ -67,7 +67,7 @@ public class Server {
                     out.writeObject(DataDAO.getFolders(data.getProperty("USERNAME")));
                 }
                 else if(data.getProperty("KEY").equals("GET_MESSAGES")){
-                    out.writeObject(DataDAO.getMessages(data.getProperty("USERNAME")));
+                    out.writeObject(DataDAO.getMessages(data.getProperty("USERNAME"), data.getProperty("FOLDERNAME")));
                 }
                 else if(data.getProperty("KEY").equals("NEW_FOLDER")){
                     DataDAO.createFolder(data.getProperty("USERNAME"), data.getProperty("FOLDERNAME"));
@@ -86,6 +86,12 @@ public class Server {
                         out.writeObject("true");
                     }
                     else out.writeObject("false");
+                }
+                else if(data.getProperty("KEY").equals("DEL_MESSAGE")){
+                    DataDAO.delMessage(data.getProperty("ID"));
+                }
+                else if(data.getProperty("KEY").equals("MOVE_MESSAGE")){
+                    DataDAO.moveMessage(data.getProperty("FOLDERNAME"), data.getProperty("ID"));
                 }
             }
         } catch (IOException ex) {

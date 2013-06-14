@@ -24,9 +24,15 @@ public class ConfirmDelete extends javax.swing.JFrame {
         buttonCancel = new javax.swing.JButton();
         labelConfirm = new javax.swing.JLabel();
 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Delete Mail");
         setPreferredSize(new java.awt.Dimension(323, 88));
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         buttonDelete.setText("Delete Mail");
         buttonDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -89,6 +95,11 @@ public class ConfirmDelete extends javax.swing.JFrame {
         setVisible(false);
         MailChooser.main(arg);
     }//GEN-LAST:event_buttonCancelActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        setVisible(false);
+        MailChooser.main(arg);
+    }//GEN-LAST:event_formWindowClosing
 
     public static void main(String args[]) {
         

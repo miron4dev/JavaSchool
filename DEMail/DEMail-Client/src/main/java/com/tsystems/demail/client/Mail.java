@@ -4,6 +4,8 @@ import com.tsystems.demail.client.Profile.MailChooser;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -35,6 +37,10 @@ public class Mail extends javax.swing.JFrame {
     public static List getList() {
         return list;
     }
+    
+    public static void setMessages(Object[][] aMessages) {
+        messages = aMessages;
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -42,7 +48,6 @@ public class Mail extends javax.swing.JFrame {
 
         popupTable = new javax.swing.JPopupMenu();
         menuOpenMsg = new javax.swing.JMenuItem();
-        menuReply = new javax.swing.JMenuItem();
         menuMoveTo = new javax.swing.JMenuItem();
         menuDelete = new javax.swing.JMenuItem();
         popupFolders = new javax.swing.JPopupMenu();
@@ -53,16 +58,15 @@ public class Mail extends javax.swing.JFrame {
         scrollFolders = new javax.swing.JScrollPane();
         folders = new javax.swing.JTree();
         buttonMsg = new javax.swing.JButton();
-        buttonCheck = new javax.swing.JButton();
         scroll = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         buttonLgt = new javax.swing.JButton();
+        buttonQuit = new javax.swing.JButton();
         menuCommon = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         menuNew = new javax.swing.JMenu();
         menuNewMessage = new javax.swing.JMenuItem();
         menuNewFolder = new javax.swing.JMenuItem();
-        menuCheck = new javax.swing.JMenuItem();
         menuLogout = new javax.swing.JMenuItem();
         menuQuit = new javax.swing.JMenuItem();
         menuHelp = new javax.swing.JMenu();
@@ -75,14 +79,6 @@ public class Mail extends javax.swing.JFrame {
             }
         });
         popupTable.add(menuOpenMsg);
-
-        menuReply.setText("Reply");
-        menuReply.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuReplyActionPerformed(evt);
-            }
-        });
-        popupTable.add(menuReply);
 
         menuMoveTo.setText("Move to...");
         menuMoveTo.addActionListener(new java.awt.event.ActionListener() {
@@ -174,8 +170,6 @@ public class Mail extends javax.swing.JFrame {
             }
         });
 
-        buttonCheck.setText("Check mail");
-
         table.setModel(new javax.swing.table.DefaultTableModel(
             forTable,
             new String [] {
@@ -204,6 +198,13 @@ public class Mail extends javax.swing.JFrame {
             }
         });
 
+        buttonQuit.setText("Quit");
+        buttonQuit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonQuitActionPerformed(evt);
+            }
+        });
+
         menuFile.setText("File");
 
         menuNew.setText("New");
@@ -225,9 +226,6 @@ public class Mail extends javax.swing.JFrame {
         menuNew.add(menuNewFolder);
 
         menuFile.add(menuNew);
-
-        menuCheck.setText("Check mail");
-        menuFile.add(menuCheck);
 
         menuLogout.setText("Logout");
         menuLogout.addActionListener(new java.awt.event.ActionListener() {
@@ -274,10 +272,10 @@ public class Mail extends javax.swing.JFrame {
                         .addComponent(scroll, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(buttonMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(buttonCheck, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(buttonLgt, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonLgt, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buttonQuit, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -286,8 +284,8 @@ public class Mail extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonMsg)
-                    .addComponent(buttonCheck)
-                    .addComponent(buttonLgt))
+                    .addComponent(buttonLgt)
+                    .addComponent(buttonQuit))
                 .addGap(5, 5, 5)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(scrollFolders)
@@ -305,8 +303,8 @@ public class Mail extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonLgtActionPerformed
 
     private void buttonMsgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMsgActionPerformed
-        NewMessage.setUsername(username);
-        NewMessage.main(arg);
+        NewMessage newm = new NewMessage(username, "", "");
+        newm.setVisible(true);
     }//GEN-LAST:event_buttonMsgActionPerformed
 
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
@@ -324,7 +322,7 @@ public class Mail extends javax.swing.JFrame {
         {
             JTable target = (JTable)evt.getSource();
             int row = target.getSelectedRow();
-            OpenMessage open = new OpenMessage(messages[row][1].toString(), messages[row][3].toString(), messages[row][2].toString(), messages[row][4].toString(), messages[row][0].toString());
+            OpenMessage open = new OpenMessage(messages[row][1].toString(), messages[row][3].toString(), messages[row][2].toString(), messages[row][4].toString(), messages[row][0].toString(), row);
             open.setVisible(true);
         }
             
@@ -343,7 +341,9 @@ public class Mail extends javax.swing.JFrame {
         }
         else if(evt.getClickCount() == 2)
         {
-            JOptionPane.showMessageDialog(rootPane, "Double-click!");
+            TreePath path = folders.getSelectionPath();
+            String foldername = path.getLastPathComponent().toString();
+            openFolder(foldername);
         }
     }//GEN-LAST:event_foldersMouseClicked
 
@@ -352,7 +352,8 @@ public class Mail extends javax.swing.JFrame {
     }//GEN-LAST:event_menuAboutActionPerformed
 
     private void menuNewMessageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNewMessageActionPerformed
-        NewMessage.main(arg);
+        NewMessage newm = new NewMessage(username, "", "");
+        newm.setVisible(true);
     }//GEN-LAST:event_menuNewMessageActionPerformed
 
     private void menuLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLogoutActionPerformed
@@ -426,32 +427,25 @@ public class Mail extends javax.swing.JFrame {
                 ConfirmDelete.main(arg);
             }
         }
-        catch(NullPointerException ex)
-        {
+        catch(NullPointerException ex){
             JOptionPane.showMessageDialog(rootPane, "You cannot delete the system folder.");
         }
     }//GEN-LAST:event_menuDelFldrActionPerformed
 
     private void menuOpenFldrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOpenFldrActionPerformed
         TreePath path = folders.getSelectionPath();
-        MutableTreeNode node =(MutableTreeNode) path.getLastPathComponent();
+        String foldername = path.getLastPathComponent().toString();
+        openFolder(foldername);
     }//GEN-LAST:event_menuOpenFldrActionPerformed
 
     private void menuOpenMsgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOpenMsgActionPerformed
         int row = table.getSelectedRow();
-        OpenMessage open = new OpenMessage(messages[row][1].toString(), messages[row][3].toString(), messages[row][2].toString(), messages[row][4].toString(), messages[row][0].toString());
+        OpenMessage open = new OpenMessage(messages[row][1].toString(), messages[row][3].toString(), messages[row][2].toString(), messages[row][4].toString(), messages[row][0].toString(), row);
         open.setVisible(true);
     }//GEN-LAST:event_menuOpenMsgActionPerformed
 
-    private void menuReplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReplyActionPerformed
-        NewMessage.main(arg);
-    }//GEN-LAST:event_menuReplyActionPerformed
-
     private void menuDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDeleteActionPerformed
-        int row = table.getSelectedRow();
-        DefaultTableModel model = (DefaultTableModel)table.getModel();
-        model.removeRow(row);
-        table.setModel(model);
+        deleteMessage(table.getSelectedRow());
     }//GEN-LAST:event_menuDeleteActionPerformed
 
     private void menuMoveToActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuMoveToActionPerformed
@@ -465,10 +459,24 @@ public class Mail extends javax.swing.JFrame {
         folds[5] = "Priority";
         for(int i = 6; i < list.size()+6; i++)
             folds[i] = list.get(i-6).toString();
-        MoveTo move = new MoveTo(folds, row, table);
+        MoveTo move = new MoveTo(folds, row, table, messages[row][5].toString());
         move.setVisible(true);
     }//GEN-LAST:event_menuMoveToActionPerformed
 
+    private void buttonQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonQuitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_buttonQuitActionPerformed
+
+    public static void deleteMessage(int row){
+        DefaultTableModel model = (DefaultTableModel)table.getModel();
+        model.removeRow(row);
+        table.setModel(model);
+        Properties p = new Properties();
+        p.setProperty("KEY", "DEL_MESSAGE");
+        p.setProperty("ID", messages[row][5].toString());
+        Client.sendAction(p);
+    }
+    
     public final void setFolderList(){
         DefaultTreeModel model = (DefaultTreeModel) folders.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
@@ -479,21 +487,55 @@ public class Mail extends javax.swing.JFrame {
         model.reload(root);
     }
     
-    public static Object[][] getMessageList() throws IOException, ClassNotFoundException{
+    public static Object[][] getForTableList(String username, String foldername) throws IOException, ClassNotFoundException
+    {
+            Object[][] arrayOfMessages = getMessagesList(username, foldername);
+            Object[][] forTable1 = new Object[arrayOfMessages.length][3];
+            for(int i = 0; i < arrayOfMessages.length; i++){
+                for(int j = 0; j < 3; j++){
+                    forTable1[i][j] = arrayOfMessages[i][j].toString();
+                }
+            }
+            return forTable1;
+    }
+    
+    public static Object[][] getMessagesList(String username, String foldername) throws IOException, ClassNotFoundException
+    {
             Properties p2 = new Properties();
             p2.setProperty("KEY", "GET_MESSAGES");
             p2.setProperty("USERNAME", username);
-            List<Object[]> messages = Client.getList(p2);
-            Object[][] arrayOfMessages = new Object[messages.size()][];
-            arrayOfMessages=messages.toArray(arrayOfMessages);
-            Object[][] result = new Object[messages.size()][3];
-            for(int i = 0; i < messages.size(); i++){
-                for(int j = 0; j < 3; j++){
-                    result[i][j] = arrayOfMessages[i][j].toString();
-                }
-            }
-            return result;
+            p2.setProperty("FOLDERNAME", foldername);
+            List<Object[]> messages1 = Client.getList(p2);
+            Object[][] arrayOfMessages = new Object[messages1.size()][];
+            arrayOfMessages=messages1.toArray(arrayOfMessages);
+            
+            return arrayOfMessages;
     }
+    
+    private static void openFolder(String foldername){
+        try {
+            table.setModel(new javax.swing.table.DefaultTableModel(
+                    getForTableList(username, foldername),
+                    new String [] {
+                        "Subject", "From", "Date"
+                    }
+                ) {
+                    boolean[] canEdit = new boolean [] {
+                        false, false, false
+                    };
+
+                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+                        return canEdit [columnIndex];
+                    }
+                });
+                setMessages(getMessagesList(username, foldername));
+        } catch (IOException ex) {
+            Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public static void main(String args[]) {
         
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -525,12 +567,11 @@ public class Mail extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonCheck;
     private javax.swing.JButton buttonLgt;
     private javax.swing.JButton buttonMsg;
+    private javax.swing.JButton buttonQuit;
     public static javax.swing.JTree folders;
     private javax.swing.JMenuItem menuAbout;
-    private javax.swing.JMenuItem menuCheck;
     private javax.swing.JMenuBar menuCommon;
     private javax.swing.JMenuItem menuDelFldr;
     private javax.swing.JMenuItem menuDelete;
@@ -546,11 +587,10 @@ public class Mail extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuOpenMsg;
     private javax.swing.JMenuItem menuQuit;
     private javax.swing.JMenuItem menuRenFldr;
-    private javax.swing.JMenuItem menuReply;
     private javax.swing.JPopupMenu popupFolders;
     private javax.swing.JPopupMenu popupTable;
     private javax.swing.JScrollPane scroll;
     private javax.swing.JScrollPane scrollFolders;
-    private javax.swing.JTable table;
+    private static javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

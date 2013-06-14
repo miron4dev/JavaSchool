@@ -1,6 +1,7 @@
 
 package com.tsystems.demail.client;
 
+import java.util.Properties;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -9,11 +10,13 @@ public class MoveTo extends javax.swing.JFrame {
     private static String[] list;
     private static int row;
     private static JTable table;
+    private static String id;
     
-    public MoveTo(String[] list, int row, JTable table) {
+    public MoveTo(String[] list, int row, JTable table, String id) {
         MoveTo.list = list;
         MoveTo.row = row;
         MoveTo.table = table;
+        MoveTo.id = id;
         initComponents();
     }
 
@@ -93,6 +96,12 @@ public class MoveTo extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)table.getModel();
         model.removeRow(row);
         table.setModel(model);
+        String foldername = boxList.getSelectedItem().toString();
+        Properties p = new Properties();
+        p.setProperty("KEY", "MOVE_MESSAGE");
+        p.setProperty("ID", id);
+        p.setProperty("FOLDERNAME", foldername);
+        Client.sendAction(p);
         setVisible(false);
     }//GEN-LAST:event_buttonMoveActionPerformed
 
@@ -122,7 +131,7 @@ public class MoveTo extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MoveTo(list, row, table).setVisible(true);
+                new MoveTo(list, row, table, id).setVisible(true);
             }
         });
     }

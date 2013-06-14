@@ -7,13 +7,16 @@ import javax.swing.JOptionPane;
 public class NewMessage extends javax.swing.JFrame {
 
     private static String username;
+    private static String to, subject;
 
-    public static void setUsername(String aUsername) {
-        username = aUsername;
-    }
     
-    public NewMessage() {
+    public NewMessage(String username, String to, String subject) {
+        NewMessage.username = username;
+        NewMessage.to = to;
+        NewMessage.subject = subject;
         initComponents();
+        fieldTo.setText(to);
+        fieldSubject.setText(subject);
     }
 
     private final String[] arg = {};
@@ -117,26 +120,30 @@ public class NewMessage extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonCnclActionPerformed
 
     private void buttonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSendActionPerformed
-        String to = fieldTo.getText();
-        String subject = fieldSubject.getText();
+        String to1 = fieldTo.getText();
+        String subject1 = fieldSubject.getText();
         String text = areaMessage.getText();
-        boolean toCheck = false, textCheck = false;
+        boolean toCheck = false, textCheck = false, selfCheck = false;
         String toAlert = "";
         String textAlert = "";
-        if(Validator.userNameChecking(to) == true)
+        String selfAlert = "";
+        if(Validator.userNameChecking(to1) == true)
             toCheck = true;
         else toAlert = "To field must be between 6 and 30 characters and contain only letters (a-z) and numbers.\n";
         if(text.length() > 0)
             textCheck = true;
-        else textAlert = "Text field cannot be null.";
-        if(toCheck && textCheck == true)
+        else textAlert = "Text field cannot be null.\n";
+        if((to1+"@demail.com").equals(username) == false)
+            selfCheck = true;
+        else selfAlert = "You cannot send messages to yourself.\n";
+        if(toCheck && textCheck && selfCheck == true)
         {
             try {
                 Properties p = new Properties();
                 p.setProperty("KEY", "SEND_MESSAGE");
                 p.setProperty("FROM", username);
-                p.setProperty("TO", to + "@demail.com");
-                p.setProperty("SUBJECT", subject);
+                p.setProperty("TO", to1 + "@demail.com");
+                p.setProperty("SUBJECT", subject1);
                 p.setProperty("TEXT", text);
                 if(Client.getAnswer(p) == true){
                     JOptionPane.showMessageDialog(rootPane, "Message sent.");
@@ -149,7 +156,7 @@ public class NewMessage extends javax.swing.JFrame {
                 ex.printStackTrace();
             }
         }
-        else JOptionPane.showMessageDialog(rootPane, toAlert + textAlert);
+        else JOptionPane.showMessageDialog(rootPane, toAlert + textAlert + selfAlert);
     }//GEN-LAST:event_buttonSendActionPerformed
 
     public static void main(String args[]) {
@@ -178,7 +185,7 @@ public class NewMessage extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new NewMessage().setVisible(true);
+                new NewMessage(username, to, subject).setVisible(true);
             }
         });
     }
