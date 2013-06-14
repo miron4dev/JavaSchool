@@ -40,7 +40,7 @@
                       <Component id="labelConfirm" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="22" max="32767" attributes="0"/>
+              <EmptySpace pref="33" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -78,7 +78,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="labelConfirm">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Are you sure you want to delete the folder?"/>
+        <Property name="text" type="java.lang.String" value="Are you sure you want to delete the mail?"/>
       </Properties>
     </Component>
   </SubComponents>

@@ -57,20 +57,16 @@ public class Server {
                     }
                     else out.writeObject("false");
                 }
-                else if(data.getProperty("KEY").equals("GET_MAILS"))
-                {
+                else if(data.getProperty("KEY").equals("GET_MAILS")){
                     out.writeObject(DataDAO.getMails(data.getProperty("PHONE")));
                 }
-                else if(data.getProperty("KEY").equals("DELETE_MAIL"))
-                {
+                else if(data.getProperty("KEY").equals("DELETE_MAIL")){
                     DataDAO.deleteMail(data.getProperty("USERNAME"));
                 }
-                else if(data.getProperty("KEY").equals("GET_FOLDERS"))
-                {
+                else if(data.getProperty("KEY").equals("GET_FOLDERS")){
                     out.writeObject(DataDAO.getFolders(data.getProperty("USERNAME")));
                 }
-                else if(data.getProperty("KEY").equals("GET_MESSAGES"))
-                {
+                else if(data.getProperty("KEY").equals("GET_MESSAGES")){
                     out.writeObject(DataDAO.getMessages(data.getProperty("USERNAME")));
                 }
                 else if(data.getProperty("KEY").equals("NEW_FOLDER")){
@@ -81,6 +77,15 @@ public class Server {
                 }
                 else if(data.getProperty("KEY").equals("REN_FOLDER")){
                     DataDAO.renameFolder(data.getProperty("USERNAME"), data.getProperty("FOLDERNAME"), data.getProperty("NEWFOLDERNAME"));
+                }
+                else if(data.getProperty("KEY").equals("SEND_MESSAGE"))
+                {
+                    if(RegistrationService.userChecking(data.getProperty("TO")) == false)
+                    {
+                        DataDAO.sendMessage(data.getProperty("FROM"), data.getProperty("TO"), data.getProperty("SUBJECT"), data.getProperty("TEXT"));
+                        out.writeObject("true");
+                    }
+                    else out.writeObject("false");
                 }
             }
         } catch (IOException ex) {

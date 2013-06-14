@@ -2,7 +2,14 @@ package com.tsystems.demail.client;
 
 public class OpenMessage extends javax.swing.JFrame {
 
-    public OpenMessage() {
+    private static String from, to, date, text, subject;
+    
+    public OpenMessage(String from, String to, String date, String text, String subject) {
+        OpenMessage.from = from;
+        OpenMessage.to = to;
+        OpenMessage.date = date;
+        OpenMessage.text = text;
+        OpenMessage.subject = subject;
         initComponents();
     }
 
@@ -16,13 +23,17 @@ public class OpenMessage extends javax.swing.JFrame {
         labelSubject = new javax.swing.JLabel();
         labelDate = new javax.swing.JLabel();
         buttonDelete = new javax.swing.JButton();
-        buttonSpam = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         areaMsg = new javax.swing.JTextArea();
         buttonReply = new javax.swing.JButton();
         labelTo = new javax.swing.JLabel();
+        labelFromGet = new javax.swing.JLabel();
+        labelSubjectGet = new javax.swing.JLabel();
+        labelToGet = new javax.swing.JLabel();
+        labelDateGet = new javax.swing.JLabel();
 
         setTitle("Message");
+        setResizable(false);
 
         labelFrom.setText("From");
 
@@ -32,12 +43,10 @@ public class OpenMessage extends javax.swing.JFrame {
 
         buttonDelete.setText("Delete");
 
-        buttonSpam.setText("To Spam");
-
-        areaMsg.setEditable(false);
         areaMsg.setColumns(20);
         areaMsg.setRows(5);
         jScrollPane1.setViewportView(areaMsg);
+        areaMsg.setText(text);
 
         buttonReply.setText("Reply");
         buttonReply.addActionListener(new java.awt.event.ActionListener() {
@@ -47,6 +56,14 @@ public class OpenMessage extends javax.swing.JFrame {
         });
 
         labelTo.setText("To");
+
+        labelFromGet.setText(from);
+
+        labelSubjectGet.setText(subject);
+
+        labelToGet.setText(to);
+
+        labelDateGet.setText(date);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -63,15 +80,26 @@ public class OpenMessage extends javax.swing.JFrame {
                             .addComponent(labelSubject)
                             .addComponent(labelFrom)
                             .addComponent(labelTo))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 288, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(buttonReply)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonDelete)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(buttonSpam))
-                            .addComponent(labelDate))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(labelFromGet)
+                                    .addComponent(labelToGet))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 174, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(labelDate)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(labelDateGet)
+                                        .addGap(72, 72, 72))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(buttonReply, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(buttonDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(labelSubjectGet)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -79,17 +107,22 @@ public class OpenMessage extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(labelFrom)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelFrom)
+                        .addComponent(labelFromGet))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(buttonDelete)
-                        .addComponent(buttonSpam)
                         .addComponent(buttonReply)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(labelSubject)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelSubject)
+                    .addComponent(labelSubjectGet))
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelTo)
-                    .addComponent(labelDate))
+                    .addComponent(labelDate)
+                    .addComponent(labelToGet)
+                    .addComponent(labelDateGet))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
                 .addGap(5, 5, 5))
@@ -129,7 +162,7 @@ public class OpenMessage extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new OpenMessage().setVisible(true);
+                new OpenMessage(from, to, date, text, subject).setVisible(true);
             }
         });
     }
@@ -137,11 +170,14 @@ public class OpenMessage extends javax.swing.JFrame {
     private javax.swing.JTextArea areaMsg;
     private javax.swing.JButton buttonDelete;
     private javax.swing.JButton buttonReply;
-    private javax.swing.JButton buttonSpam;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelDate;
+    private javax.swing.JLabel labelDateGet;
     private javax.swing.JLabel labelFrom;
+    private javax.swing.JLabel labelFromGet;
     private javax.swing.JLabel labelSubject;
+    private javax.swing.JLabel labelSubjectGet;
     private javax.swing.JLabel labelTo;
+    private javax.swing.JLabel labelToGet;
     // End of variables declaration//GEN-END:variables
 }

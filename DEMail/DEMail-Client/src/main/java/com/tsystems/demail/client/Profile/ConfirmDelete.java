@@ -1,7 +1,6 @@
 package com.tsystems.demail.client.Profile;
 
 import com.tsystems.demail.client.Client;
-import java.io.IOException;
 import java.util.Properties;
 
 public class ConfirmDelete extends javax.swing.JFrame {
@@ -43,7 +42,7 @@ public class ConfirmDelete extends javax.swing.JFrame {
             }
         });
 
-        labelConfirm.setText("Are you sure you want to delete the folder?");
+        labelConfirm.setText("Are you sure you want to delete the mail?");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -59,7 +58,7 @@ public class ConfirmDelete extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(43, 43, 43)
                         .addComponent(labelConfirm)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -88,6 +87,7 @@ public class ConfirmDelete extends javax.swing.JFrame {
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
         setVisible(false);
+        MailChooser.main(arg);
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     public static void main(String args[]) {

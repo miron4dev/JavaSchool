@@ -1,5 +1,6 @@
 package com.tsystems.demail.client;
 
+import java.util.List;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -105,6 +106,9 @@ public class NewFolder extends javax.swing.JFrame {
             p.setProperty("USERNAME", username);
             p.setProperty("FOLDERNAME", name);
             Client.sendAction(p);
+            List list = Mail.getList();
+            list.add(name);
+            Mail.setList(list);
             folder.add(new DefaultMutableTreeNode(name));
             model.reload(root);
             for (int i = 0; i < Mail.folders.getRowCount(); i++) {

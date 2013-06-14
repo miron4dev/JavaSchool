@@ -1,6 +1,7 @@
 package com.tsystems.demail;
 
 import com.tsystems.demail.entity.Folders;
+import com.tsystems.demail.entity.Messages;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -41,7 +42,7 @@ public class DataDAO
         EntityManager em = Server.emf.createEntityManager();
         em.getTransaction().begin();
         int mail_id = Integer.parseInt(em.createNativeQuery("select id from Mails where name='" + username + "'").getSingleResult().toString());
-        List messages = em.createNativeQuery("select subject, from_name, sent_date, to_name, text from Messages where mail_id=" + mail_id + " and folder_id=(select id from Folders where name='Inbox' and mail_id=" + mail_id + ")").getResultList();
+        List messages = em.createNativeQuery("select subject, from_name, sent_date, to_name, text, id from Messages where mail_id=" + mail_id + " and folder_id=(select id from Folders where name='Inbox' and mail_id=" + mail_id + ")").getResultList();
         em.close();
         
         return messages;
@@ -73,6 +74,25 @@ public class DataDAO
         int mail_id = Integer.parseInt(em.createNativeQuery("select id from Mails where name='" + username + "'").getSingleResult().toString());
         Query q = em.createQuery("update Folders set name='" + newfoldername + "' where name='" + foldername + "' and mail_id=" + mail_id);
         q.executeUpdate();
+        em.getTransaction().commit();
+        em.close();
+    }
+    
+    public static void moveMessage(String username, String destfolder){
+        
+    }
+    
+    public static void sendMessage(String from, String to, String subject, String text){
+        EntityManager em = Server.emf.createEntityManager();
+        em.getTransaction().begin();
+        int mail_id_from = Integer.parseInt(em.createNativeQuery("select id from Mails where name='" + from + "'").getSingleResult().toString());
+        int mail_id_to = Integer.parseInt(em.createNativeQuery("select id from Mails where name='" + to + "'").getSingleResult().toString());
+        int folder_id_from = Integer.parseInt(em.createNativeQuery("select id from Folders where mail_id=" + mail_id_from + " and name='Sent'").getSingleResult().toString());
+        int folder_id_to = Integer.parseInt(em.createNativeQuery("select id from Folders where mail_id=" + mail_id_to + " and name='Inbox'").getSingleResult().toString());
+        Messages msg_from = new Messages(folder_id_from, mail_id_from, from, to, subject, new java.sql.Date(new java.util.Date().getTime()), text);
+        Messages msg_to = new Messages(folder_id_to, mail_id_to, from, to, subject, new java.sql.Date(new java.util.Date().getTime()), text);
+        em.persist(msg_from);
+        em.persist(msg_to);
         em.getTransaction().commit();
         em.close();
     }

@@ -28,26 +28,24 @@
           <Group type="102" attributes="0">
               <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                      <Component id="labelSubject" min="-2" max="-2" attributes="0"/>
-                      <Component id="labelFrom" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="labelSubject" alignment="0" min="-2" max="-2" attributes="0"/>
                   <Component id="labelTo" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="fieldTo" max="32767" attributes="0"/>
-                  <Component id="fieldFrom" max="32767" attributes="0"/>
                   <Component id="fieldSubject" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="fieldTo" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                      <Component id="jTextField1" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
               <Component id="buttonSend" min="-2" pref="100" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-              <Component id="buttonSave" min="-2" pref="120" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
               <Component id="buttonCncl" min="-2" pref="100" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -58,13 +56,9 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="labelFrom" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="fieldFrom" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="fieldTo" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="labelTo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -76,7 +70,6 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="buttonSend" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="buttonSave" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="buttonCncl" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
@@ -85,11 +78,6 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="labelFrom">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="From:"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="labelTo">
       <Properties>
         <Property name="text" type="java.lang.String" value="To:"/>
@@ -99,8 +87,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Subject:"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="fieldFrom">
     </Component>
     <Component class="javax.swing.JTextField" name="fieldTo">
     </Component>
@@ -126,11 +112,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Send"/>
       </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="buttonSave">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Save to drafts"/>
-      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonSendActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="buttonCncl">
       <Properties>
@@ -139,6 +123,13 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonCnclActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextField1">
+      <Properties>
+        <Property name="editable" type="boolean" value="false"/>
+        <Property name="text" type="java.lang.String" value="@demail.com"/>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

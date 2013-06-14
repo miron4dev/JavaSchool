@@ -155,7 +155,7 @@ public class MailChooser extends javax.swing.JFrame {
                 }
             }
             setVisible(false);
-            Mail client = new Mail(boxList.getSelectedItem().toString(), folders.subList(6, folders.size()), forTable);
+            Mail client = new Mail(boxList.getSelectedItem().toString(), folders.subList(6, folders.size()), forTable, arrayOfMessages);
             client.setVisible(true);
         } catch (IOException ex) {
             ex.printStackTrace();

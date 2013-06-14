@@ -1,5 +1,6 @@
 package com.tsystems.demail.client;
 
+import java.util.List;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -113,6 +114,10 @@ public class RenameFolder extends javax.swing.JFrame {
             p.setProperty("FOLDERNAME", currentFolderName);
             p.setProperty("NEWFOLDERNAME", name);
             Client.sendAction(p);
+            List list = Mail.getList();
+            list.remove(currentFolderName);
+            list.add(name);
+            Mail.setList(list);
             model.reload(root);
             for (int i = 0; i < Mail.folders.getRowCount(); i++) {
                 Mail.folders.expandRow(i);

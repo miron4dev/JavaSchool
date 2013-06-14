@@ -14,17 +14,26 @@ import javax.swing.tree.TreePath;
 
 public class Mail extends javax.swing.JFrame {
 
-
     private final String[] arg = {};
     private static String username;
     private static List list;
     private static Object[][] forTable;
+    private static Object[][] messages;
     
-    public Mail(String username, List list, Object[][] forTable) {
+    public Mail(String username, List list, Object[][] forTable, Object[][] messages) {
         Mail.username = username;
         Mail.list = list;
         Mail.forTable = forTable;
+        Mail.messages = messages;
         initComponents();
+    }
+
+    public static void setList(List aList) {
+        list = aList;
+    }
+    
+    public static List getList() {
+        return list;
     }
 
     @SuppressWarnings("unchecked")
@@ -296,6 +305,7 @@ public class Mail extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonLgtActionPerformed
 
     private void buttonMsgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMsgActionPerformed
+        NewMessage.setUsername(username);
         NewMessage.main(arg);
     }//GEN-LAST:event_buttonMsgActionPerformed
 
@@ -314,7 +324,8 @@ public class Mail extends javax.swing.JFrame {
         {
             JTable target = (JTable)evt.getSource();
             int row = target.getSelectedRow();
-            OpenMessage.main(arg);
+            OpenMessage open = new OpenMessage(messages[row][1].toString(), messages[row][3].toString(), messages[row][2].toString(), messages[row][4].toString(), messages[row][0].toString());
+            open.setVisible(true);
         }
             
     }//GEN-LAST:event_tableMouseClicked
@@ -346,7 +357,7 @@ public class Mail extends javax.swing.JFrame {
 
     private void menuLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLogoutActionPerformed
         setVisible(false);
-        App.main(arg);
+        MailChooser.main(arg);
     }//GEN-LAST:event_menuLogoutActionPerformed
 
     private void menuQuitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuQuitActionPerformed
@@ -427,7 +438,9 @@ public class Mail extends javax.swing.JFrame {
     }//GEN-LAST:event_menuOpenFldrActionPerformed
 
     private void menuOpenMsgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuOpenMsgActionPerformed
-        OpenMessage.main(arg);
+        int row = table.getSelectedRow();
+        OpenMessage open = new OpenMessage(messages[row][1].toString(), messages[row][3].toString(), messages[row][2].toString(), messages[row][4].toString(), messages[row][0].toString());
+        open.setVisible(true);
     }//GEN-LAST:event_menuOpenMsgActionPerformed
 
     private void menuReplyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuReplyActionPerformed
@@ -442,7 +455,18 @@ public class Mail extends javax.swing.JFrame {
     }//GEN-LAST:event_menuDeleteActionPerformed
 
     private void menuMoveToActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuMoveToActionPerformed
-        // TODO add your handling code here:
+        int row = table.getSelectedRow();
+        String[] folds = new String[list.size()+6];
+        folds[0] = "Inbox";
+        folds[1] = "Sents";
+        folds[2] = "Drafts";
+        folds[3] = "Spam";
+        folds[4] = "Trash";
+        folds[5] = "Priority";
+        for(int i = 6; i < list.size()+6; i++)
+            folds[i] = list.get(i-6).toString();
+        MoveTo move = new MoveTo(folds, row, table);
+        move.setVisible(true);
     }//GEN-LAST:event_menuMoveToActionPerformed
 
     public final void setFolderList(){
@@ -496,7 +520,7 @@ public class Mail extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Mail(username, list, forTable).setVisible(true);
+                new Mail(username, getList(), forTable, messages).setVisible(true);
             }
         });
     }

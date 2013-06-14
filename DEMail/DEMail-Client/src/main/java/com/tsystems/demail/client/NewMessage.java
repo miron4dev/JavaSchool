@@ -1,7 +1,17 @@
 package com.tsystems.demail.client;
 
+import java.io.IOException;
+import java.util.Properties;
+import javax.swing.JOptionPane;
+
 public class NewMessage extends javax.swing.JFrame {
 
+    private static String username;
+
+    public static void setUsername(String aUsername) {
+        username = aUsername;
+    }
+    
     public NewMessage() {
         initComponents();
     }
@@ -12,22 +22,18 @@ public class NewMessage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        labelFrom = new javax.swing.JLabel();
         labelTo = new javax.swing.JLabel();
         labelSubject = new javax.swing.JLabel();
-        fieldFrom = new javax.swing.JTextField();
         fieldTo = new javax.swing.JTextField();
         fieldSubject = new javax.swing.JTextField();
         scrollMessage = new javax.swing.JScrollPane();
         areaMessage = new javax.swing.JTextArea();
         buttonSend = new javax.swing.JButton();
-        buttonSave = new javax.swing.JButton();
         buttonCncl = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
 
         setTitle("New message");
         setResizable(false);
-
-        labelFrom.setText("From:");
 
         labelTo.setText("To:");
 
@@ -39,8 +45,11 @@ public class NewMessage extends javax.swing.JFrame {
         scrollMessage.setViewportView(areaMessage);
 
         buttonSend.setText("Send");
-
-        buttonSave.setText("Save to drafts");
+        buttonSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSendActionPerformed(evt);
+            }
+        });
 
         buttonCncl.setText("Cancel");
         buttonCncl.addActionListener(new java.awt.event.ActionListener() {
@@ -48,6 +57,10 @@ public class NewMessage extends javax.swing.JFrame {
                 buttonCnclActionPerformed(evt);
             }
         });
+
+        jTextField1.setEditable(false);
+        jTextField1.setText("@demail.com");
+        jTextField1.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -57,22 +70,20 @@ public class NewMessage extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(labelSubject)
-                        .addComponent(labelFrom))
+                    .addComponent(labelSubject)
                     .addComponent(labelTo, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(fieldTo)
-                    .addComponent(fieldFrom)
-                    .addComponent(fieldSubject))
+                    .addComponent(fieldSubject)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(fieldTo)
+                        .addGap(1, 1, 1)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addGap(65, 65, 65)
                 .addComponent(buttonSend, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(69, 69, 69)
                 .addComponent(buttonCncl, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -81,12 +92,9 @@ public class NewMessage extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(labelFrom)
-                    .addComponent(fieldFrom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fieldTo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labelTo))
+                    .addComponent(labelTo)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(fieldSubject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -96,7 +104,6 @@ public class NewMessage extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonSend)
-                    .addComponent(buttonSave)
                     .addComponent(buttonCncl))
                 .addGap(5, 5, 5))
         );
@@ -108,6 +115,42 @@ public class NewMessage extends javax.swing.JFrame {
     private void buttonCnclActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCnclActionPerformed
         setVisible(false);
     }//GEN-LAST:event_buttonCnclActionPerformed
+
+    private void buttonSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSendActionPerformed
+        String to = fieldTo.getText();
+        String subject = fieldSubject.getText();
+        String text = areaMessage.getText();
+        boolean toCheck = false, textCheck = false;
+        String toAlert = "";
+        String textAlert = "";
+        if(Validator.userNameChecking(to) == true)
+            toCheck = true;
+        else toAlert = "To field must be between 6 and 30 characters and contain only letters (a-z) and numbers.\n";
+        if(text.length() > 0)
+            textCheck = true;
+        else textAlert = "Text field cannot be null.";
+        if(toCheck && textCheck == true)
+        {
+            try {
+                Properties p = new Properties();
+                p.setProperty("KEY", "SEND_MESSAGE");
+                p.setProperty("FROM", username);
+                p.setProperty("TO", to + "@demail.com");
+                p.setProperty("SUBJECT", subject);
+                p.setProperty("TEXT", text);
+                if(Client.getAnswer(p) == true){
+                    JOptionPane.showMessageDialog(rootPane, "Message sent.");
+                    setVisible(false);
+                }
+                else JOptionPane.showMessageDialog(rootPane, "User with that mail is not registered.");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        }
+        else JOptionPane.showMessageDialog(rootPane, toAlert + textAlert);
+    }//GEN-LAST:event_buttonSendActionPerformed
 
     public static void main(String args[]) {
         
@@ -142,12 +185,10 @@ public class NewMessage extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaMessage;
     private javax.swing.JButton buttonCncl;
-    private javax.swing.JButton buttonSave;
     private javax.swing.JButton buttonSend;
-    private javax.swing.JTextField fieldFrom;
     private javax.swing.JTextField fieldSubject;
     private javax.swing.JTextField fieldTo;
-    private javax.swing.JLabel labelFrom;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel labelSubject;
     private javax.swing.JLabel labelTo;
     private javax.swing.JScrollPane scrollMessage;

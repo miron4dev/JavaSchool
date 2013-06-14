@@ -1,5 +1,6 @@
 package com.tsystems.demail.client;
 
+import java.util.List;
 import java.util.Properties;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
@@ -101,6 +102,9 @@ public class ConfirmDelete extends javax.swing.JFrame {
         p.setProperty("USERNAME", username);
         p.setProperty("FOLDERNAME", foldername);
         Client.sendAction(p);
+        List list = Mail.getList();
+        list.remove(foldername);
+        Mail.setList(list);
         setVisible(false);
     }//GEN-LAST:event_buttonDeleteActionPerformed
 
