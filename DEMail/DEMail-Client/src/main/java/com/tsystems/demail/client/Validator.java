@@ -43,9 +43,10 @@ public class Validator
     
     public static boolean permitActionChecking(String nodeName)
     {
+        nodeName = nodeName.toLowerCase();
         ProtocolParameters pp = new ProtocolParameters();
-        if(nodeName.equals(pp.INBOX) || nodeName.equals(pp.SENTS) || nodeName.equals(pp.DRAFTS) || 
-           nodeName.equals(pp.SPAM) || nodeName.equals(pp.TRASH) || nodeName.equals(pp.PRIORITY))
+        if(nodeName.equals(pp.INBOX.toLowerCase()) || nodeName.equals(pp.SENTS.toLowerCase()) || nodeName.equals(pp.DRAFTS.toLowerCase()) || 
+           nodeName.equals(pp.SPAM.toLowerCase()) || nodeName.equals(pp.TRASH.toLowerCase()) || nodeName.equals(pp.PRIORITY.toLowerCase()))
         {
             return false;
         }
@@ -54,8 +55,9 @@ public class Validator
     
     public static boolean systemFolderChecking(String nodeName)
     {
+        nodeName = nodeName.toLowerCase();
         ProtocolParameters pp = new ProtocolParameters();
-        if(nodeName.equals(pp.DEMAIL) || nodeName.equals(pp.USERFOLDERNAME))
+        if(nodeName.equals(pp.DEMAIL.toLowerCase()) || nodeName.equals(pp.USERFOLDERNAME.toLowerCase()))
         {
             return true;
         }

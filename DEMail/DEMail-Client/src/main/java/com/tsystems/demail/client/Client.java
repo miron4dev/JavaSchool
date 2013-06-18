@@ -1,5 +1,6 @@
 package com.tsystems.demail.client;
 
+import com.tsystems.demail.common.ProtocolParameters;
 import java.util.List;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -14,7 +15,7 @@ public class Client
     
     public static void main(String[] args) throws UnknownHostException, IOException
     {
-            Client.socket = new Socket("localhost", 1234);
+            Client.socket = new Socket(ProtocolParameters.ADDRESS, ProtocolParameters.PORT);
             App.main(args);
     }
     

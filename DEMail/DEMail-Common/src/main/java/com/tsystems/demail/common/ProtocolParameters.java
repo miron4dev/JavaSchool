@@ -24,4 +24,6 @@ public class ProtocolParameters
     public final String PRIORITY = "Priority";
     public final String DEMAIL = "DE-Mail";
     public final String USERFOLDERNAME = "Folders";
+    public final static String ADDRESS = "localhost";
+    public final static int PORT = 1234;
 }

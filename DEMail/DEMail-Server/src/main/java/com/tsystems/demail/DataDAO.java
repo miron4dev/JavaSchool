@@ -3,9 +3,9 @@ package com.tsystems.demail;
 import com.tsystems.demail.common.ProtocolParameters;
 import com.tsystems.demail.entity.Folders;
 import com.tsystems.demail.entity.Messages;
+import com.tsystems.demail.entity.Mails;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 public class DataDAO 
 {
@@ -23,8 +23,7 @@ public class DataDAO
     {
         EntityManager em = Server.emf.createEntityManager();
         em.getTransaction().begin();
-        Query q = em.createQuery("delete from Mails where name='" + name + "'");
-        q.executeUpdate();
+        em.remove(em.find(Mails.class, em.createQuery("select id from Mails where name='" + name +"'").getSingleResult()));
         em.getTransaction().commit();
         em.close();
     }
@@ -65,8 +64,8 @@ public class DataDAO
         EntityManager em = Server.emf.createEntityManager();
         em.getTransaction().begin();
         int mail_id = Integer.parseInt(em.createQuery("select id from Mails where name='" + username + "'").getSingleResult().toString());
-        Query q = em.createQuery("delete from Folders where name='" + foldername + "' and mail_id=" + mail_id);
-        q.executeUpdate();
+        int folder_id = Integer.parseInt(em.createQuery("select id from Folders where name='" + foldername + "' and mail_id=" + mail_id).getSingleResult().toString());
+        em.remove(em.find(Folders.class, folder_id));
         em.getTransaction().commit();
         em.close();
     }
@@ -76,8 +75,8 @@ public class DataDAO
         EntityManager em = Server.emf.createEntityManager();
         em.getTransaction().begin();
         int mail_id = Integer.parseInt(em.createQuery("select id from Mails where name='" + username + "'").getSingleResult().toString());
-        Query q = em.createQuery("update Folders set name='" + newfoldername + "' where name='" + foldername + "' and mail_id=" + mail_id);
-        q.executeUpdate();
+        int folder_id = Integer.parseInt(em.createQuery("select id from Folders where name='" + foldername + "' and mail_id=" + mail_id).getSingleResult().toString());
+        em.find(Folders.class, folder_id).setName(newfoldername);
         em.getTransaction().commit();
         em.close();
     }
@@ -103,8 +102,7 @@ public class DataDAO
     {
         EntityManager em = Server.emf.createEntityManager();
         em.getTransaction().begin();
-        Query q = em.createQuery("delete from Messages where id=" + id);
-        q.executeUpdate();
+        em.remove(em.find(Messages.class, Integer.parseInt(id)));
         em.getTransaction().commit();
         em.close();
     }
@@ -115,8 +113,7 @@ public class DataDAO
         em.getTransaction().begin();
         int mail_id = Integer.parseInt(em.createQuery("select mail_id from Messages where id=" + id).getSingleResult().toString());
         int folder_id = Integer.parseInt(em.createQuery("select id from Folders where name='" + foldername + "' and mail_id=" + mail_id).getSingleResult().toString());
-        Query q = em.createQuery("update Messages set folder_id=" + folder_id + "where id=" + id);
-        q.executeUpdate();
+        em.find(Messages.class, Integer.parseInt(id)).setFolder_id(folder_id);
         em.getTransaction().commit();
         em.close();
     }

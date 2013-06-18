@@ -1,5 +1,6 @@
 package com.tsystems.demail;
 
+import com.tsystems.demail.common.ProtocolParameters;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -13,7 +14,7 @@ public class Server {
     public static void main(String[] args)
     {
         try {
-            ServerSocket ss = new ServerSocket(1234);
+            ServerSocket ss = new ServerSocket(ProtocolParameters.PORT);
             System.out.println("Server is started!");
             System.out.println("Waiting a client....");
             while (true) 

@@ -27,7 +27,7 @@ public class Protocol extends Thread {
 
     @Override
     public void run() {
-        System.out.println("Client is connected. Waiting a commands...");
+        System.out.println(socket.getLocalSocketAddress() + " client is connected. Waiting a commands...");
         ObjectInputStream in = null;
         Properties data;
         try {
@@ -92,7 +92,7 @@ public class Protocol extends Thread {
             }
         }
         catch(EOFException ex){
-            System.out.println(socket.getLocalAddress() + ":" + socket.getLocalPort() + " client is disconnected.");
+            System.out.println(socket.getLocalSocketAddress() + " client is disconnected.");
         }catch (IOException ex) {
             ex.printStackTrace();
         } catch (ClassNotFoundException ex) {

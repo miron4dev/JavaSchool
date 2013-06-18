@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Messages")
+@Table(name = "messages")
 public class Messages implements Serializable 
 {
     private static final long serialVersionUID = 1L;
@@ -88,7 +88,7 @@ public class Messages implements Serializable
 
     @Override
     public String toString() {
-        return "com.tsystems.demail.entity.Messages[ id=" + id + " ]";
+        return "com.tsystems.demail.entity.messages[ id=" + id + " ]";
     }
 
     public String getFrom_name() {

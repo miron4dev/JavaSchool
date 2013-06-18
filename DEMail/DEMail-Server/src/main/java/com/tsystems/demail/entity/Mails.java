@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Mails")
+@Table(name = "mails")
 public class Mails implements Serializable 
 {
     private static final long serialVersionUID = 1L;
@@ -80,7 +80,7 @@ public class Mails implements Serializable
 
     @Override
     public String toString() {
-        return "com.tsystems.demail.entity.Mails[ id=" + id + " ]";
+        return "com.tsystems.demail.entity.mails[ id=" + id + " ]";
     }
 
     public String getName() {

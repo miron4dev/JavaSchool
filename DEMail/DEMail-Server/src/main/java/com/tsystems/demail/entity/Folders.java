@@ -1,14 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.tsystems.demail.entity;
 
 import java.io.Serializable; 
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +17,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name = "Folders")
+@Table(name = "folders")
 public class Folders implements Serializable 
 {
     private static final long serialVersionUID = 1L;
@@ -82,7 +78,7 @@ public class Folders implements Serializable
 
     @Override
     public String toString() {
-        return "com.tsystems.demail.entity.Folders[ id=" + id + " ]";
+        return "com.tsystems.demail.entity.folders[ id=" + id + " ]";
     }
 
     public String getName() {
