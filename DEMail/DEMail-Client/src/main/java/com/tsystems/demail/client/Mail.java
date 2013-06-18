@@ -1,11 +1,10 @@
 package com.tsystems.demail.client;
 
 import com.tsystems.demail.client.Profile.MailChooser;
-import java.io.IOException;
+import com.tsystems.demail.common.ProtocolCommands;
+import com.tsystems.demail.common.ProtocolParameters;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -21,13 +20,22 @@ public class Mail extends javax.swing.JFrame {
     private static List list;
     private static Object[][] forTable;
     private static Object[][] messages;
+    private ProtocolParameters pp;
+    private ProtocolCommands pc;
     
     public Mail(String username, List list, Object[][] forTable, Object[][] messages) {
+        pp = new ProtocolParameters();
+        pc = new ProtocolCommands();
         Mail.username = username;
         Mail.list = list;
         Mail.forTable = forTable;
         Mail.messages = messages;
         initComponents();
+    }
+    
+    public Mail(){
+        pc = new ProtocolCommands();
+        pp = new ProtocolParameters();
     }
 
     public static void setList(List aList) {
@@ -132,21 +140,21 @@ public class Mail extends javax.swing.JFrame {
         setTitle("DE-Mail Client");
         setResizable(false);
 
-        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("UserMail");
-        javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("DE-Mail");
-        javax.swing.tree.DefaultMutableTreeNode treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Inbox");
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode(username);
+        javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode(pp.DEMAIL);
+        javax.swing.tree.DefaultMutableTreeNode treeNode3 = new javax.swing.tree.DefaultMutableTreeNode(pp.INBOX);
         treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Sent");
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode(pp.SENTS);
         treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Drafts");
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode(pp.DRAFTS);
         treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Spam");
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode(pp.SPAM);
         treeNode2.add(treeNode3);
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Trash");
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode(pp.TRASH);
         treeNode2.add(treeNode3);
         treeNode1.add(treeNode2);
-        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("Folders");
-        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("Priority");
+        treeNode2 = new javax.swing.tree.DefaultMutableTreeNode(pp.USERFOLDERNAME);
+        treeNode3 = new javax.swing.tree.DefaultMutableTreeNode(pp.PRIORITY);
         treeNode2.add(treeNode3);
         treeNode1.add(treeNode2);
         folders.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
@@ -388,7 +396,7 @@ public class Mail extends javax.swing.JFrame {
                 {
                     throw new NullPointerException();
                 }
-                if(Validator.systemFolderChecking(node.toString()) == true)
+                if(Validator.systemFolderChecking(node.toString()) || path.getLastPathComponent().toString().equals(username) == true)
                 {
                     return ;
                 }
@@ -417,7 +425,7 @@ public class Mail extends javax.swing.JFrame {
                 {
                     throw new NullPointerException();
                 }
-                if(Validator.systemFolderChecking(node.toString()) == true)
+                if(Validator.systemFolderChecking(node.toString()) || path.getLastPathComponent().toString().equals(username) == true)
                 {
                     return ;
                 }
@@ -451,12 +459,12 @@ public class Mail extends javax.swing.JFrame {
     private void menuMoveToActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuMoveToActionPerformed
         int row = table.getSelectedRow();
         String[] folds = new String[list.size()+6];
-        folds[0] = "Inbox";
-        folds[1] = "Sents";
-        folds[2] = "Drafts";
-        folds[3] = "Spam";
-        folds[4] = "Trash";
-        folds[5] = "Priority";
+        folds[0] = pp.INBOX;
+        folds[1] = pp.SENTS;
+        folds[2] = pp.DRAFTS;
+        folds[3] = pp.SPAM;
+        folds[4] = pp.TRASH;
+        folds[5] = pp.PRIORITY;
         for(int i = 6; i < list.size()+6; i++)
             folds[i] = list.get(i-6).toString();
         MoveTo move = new MoveTo(folds, row, table, messages[row][5].toString());
@@ -467,13 +475,13 @@ public class Mail extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_buttonQuitActionPerformed
 
-    public static void deleteMessage(int row){
+    public void deleteMessage(int row){
         DefaultTableModel model = (DefaultTableModel)table.getModel();
         model.removeRow(row);
         table.setModel(model);
         Properties p = new Properties();
-        p.setProperty("KEY", "DEL_MESSAGE");
-        p.setProperty("ID", messages[row][5].toString());
+        p.setProperty(pp.KEY, pc.DELETE_MESSAGE);
+        p.setProperty(pp.ID, messages[row][5].toString());
         Client.sendAction(p);
     }
     
@@ -487,7 +495,7 @@ public class Mail extends javax.swing.JFrame {
         model.reload(root);
     }
     
-    public static Object[][] getForTableList(String username, String foldername) throws IOException, ClassNotFoundException
+    public Object[][] getForTableList(String username, String foldername)
     {
             Object[][] arrayOfMessages = getMessagesList(username, foldername);
             Object[][] forTable1 = new Object[arrayOfMessages.length][3];
@@ -499,12 +507,12 @@ public class Mail extends javax.swing.JFrame {
             return forTable1;
     }
     
-    public static Object[][] getMessagesList(String username, String foldername) throws IOException, ClassNotFoundException
+    public Object[][] getMessagesList(String username, String foldername)
     {
             Properties p2 = new Properties();
-            p2.setProperty("KEY", "GET_MESSAGES");
-            p2.setProperty("USERNAME", username);
-            p2.setProperty("FOLDERNAME", foldername);
+            p2.setProperty(pp.KEY, pc.GET_MESSAGES);
+            p2.setProperty(pp.USERNAME, username);
+            p2.setProperty(pp.FOLDERNAME, foldername);
             List<Object[]> messages1 = Client.getList(p2);
             Object[][] arrayOfMessages = new Object[messages1.size()][];
             arrayOfMessages=messages1.toArray(arrayOfMessages);
@@ -512,8 +520,7 @@ public class Mail extends javax.swing.JFrame {
             return arrayOfMessages;
     }
     
-    private static void openFolder(String foldername){
-        try {
+    private void openFolder(String foldername){
             table.setModel(new javax.swing.table.DefaultTableModel(
                     getForTableList(username, foldername),
                     new String [] {
@@ -529,11 +536,6 @@ public class Mail extends javax.swing.JFrame {
                     }
                 });
                 setMessages(getMessagesList(username, foldername));
-        } catch (IOException ex) {
-            Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Mail.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
     public static void main(String args[]) {

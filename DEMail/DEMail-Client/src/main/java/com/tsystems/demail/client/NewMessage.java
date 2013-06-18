@@ -1,6 +1,7 @@
 package com.tsystems.demail.client;
 
-import java.io.IOException;
+import com.tsystems.demail.common.ProtocolCommands;
+import com.tsystems.demail.common.ProtocolParameters;
 import java.util.Properties;
 import javax.swing.JOptionPane;
 
@@ -8,9 +9,13 @@ public class NewMessage extends javax.swing.JFrame {
 
     private static String username;
     private static String to, subject;
+    private ProtocolCommands pc;
+    private ProtocolParameters pp;
 
     
     public NewMessage(String username, String to, String subject) {
+        pc = new ProtocolCommands();
+        pp = new ProtocolParameters();
         NewMessage.username = username;
         NewMessage.to = to;
         NewMessage.subject = subject;
@@ -138,23 +143,19 @@ public class NewMessage extends javax.swing.JFrame {
         else selfAlert = "You cannot send messages to yourself.\n";
         if(toCheck && textCheck && selfCheck == true)
         {
-            try {
                 Properties p = new Properties();
-                p.setProperty("KEY", "SEND_MESSAGE");
-                p.setProperty("FROM", username);
-                p.setProperty("TO", to1 + "@demail.com");
-                p.setProperty("SUBJECT", subject1);
-                p.setProperty("TEXT", text);
+                p.setProperty(pp.KEY, pc.SEND_MESSAGE);
+                p.setProperty(pp.FROM, username);
+                p.setProperty(pp.TO, to1 + "@demail.com");
+                p.setProperty(pp.SUBJECT, subject1);
+                p.setProperty(pp.TEXT, text);
                 if(Client.getAnswer(p) == true){
                     JOptionPane.showMessageDialog(rootPane, "Message sent.");
                     setVisible(false);
                 }
                 else JOptionPane.showMessageDialog(rootPane, "User with that mail is not registered.");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } catch (ClassNotFoundException ex) {
-                ex.printStackTrace();
-            }
+            
+            
         }
         else JOptionPane.showMessageDialog(rootPane, toAlert + textAlert + selfAlert);
     }//GEN-LAST:event_buttonSendActionPerformed

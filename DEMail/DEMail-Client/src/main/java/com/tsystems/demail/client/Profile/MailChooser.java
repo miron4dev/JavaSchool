@@ -3,6 +3,8 @@ package com.tsystems.demail.client.Profile;
 import com.tsystems.demail.client.App;
 import com.tsystems.demail.client.Client;
 import com.tsystems.demail.client.Mail;
+import com.tsystems.demail.common.ProtocolCommands;
+import com.tsystems.demail.common.ProtocolParameters;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
@@ -12,12 +14,16 @@ public class MailChooser extends javax.swing.JFrame {
     private static String mobile_phone, password, first_name, last_name;
     private static String[] mails;
     private static final String[] arg = {};
+    private ProtocolCommands pc;
+    private ProtocolParameters pp;
     
     public static String getMobile_phone() {
         return mobile_phone;
     }
     
     public MailChooser(String mobile_phone, String password, String first_name, String last_name) {
+        pc = new ProtocolCommands();
+        pp = new ProtocolParameters();
         MailChooser.mobile_phone = mobile_phone;
         getMailList(mobile_phone);
         MailChooser.password = password;
@@ -136,39 +142,27 @@ public class MailChooser extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonDeleteActionPerformed
 
     private void buttonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLoginActionPerformed
-        try 
-        {
+ 
             Properties p1 = new Properties();
-            p1.setProperty("KEY", "GET_FOLDERS");
-            p1.setProperty("USERNAME", boxList.getSelectedItem().toString());
+            p1.setProperty(pp.KEY, pc.GET_FOLDERS);
+            p1.setProperty(pp.USERNAME, boxList.getSelectedItem().toString());
             List folders = Client.getList(p1);
-            Object[][] forTable = Mail.getForTableList(boxList.getSelectedItem().toString(), "Inbox");
-            Object[][] arrayOfMessages = Mail.getMessagesList(boxList.getSelectedItem().toString(), "Inbox");
+            Mail m = new Mail();
+            Object[][] forTable = m.getForTableList(boxList.getSelectedItem().toString(), pp.INBOX);
+            Object[][] arrayOfMessages = m.getMessagesList(boxList.getSelectedItem().toString(), pp.INBOX);
             setVisible(false);
             Mail client = new Mail(boxList.getSelectedItem().toString(), folders.subList(6, folders.size()), forTable, arrayOfMessages);
             client.setVisible(true);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
     }//GEN-LAST:event_buttonLoginActionPerformed
 
-    public static void getMailList(String phone){
-        try 
-        {   
+    public void getMailList(String phone){
             Properties p = new Properties();
-            p.setProperty("KEY", "GET_MAILS");
-            p.setProperty("PHONE", phone);
+            p.setProperty(pp.KEY, pc.GET_MAILS);
+            p.setProperty(pp.PHONE, phone);
             List list = Client.getList(p);
             MailChooser.mails = new String[list.size()];
             for(int i = 0; i < list.size(); i++)
             MailChooser.mails[i] = list.get(i).toString();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
     }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

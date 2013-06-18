@@ -7,8 +7,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Client
 {
@@ -16,28 +14,48 @@ public class Client
     
     public static void main(String[] args) throws UnknownHostException, IOException
     {
-        Client.socket = new Socket("localhost", 1234);
-        App.main(args);
+            Client.socket = new Socket("localhost", 1234);
+            App.main(args);
     }
     
-    public static boolean getAnswer(Properties data) throws IOException, ClassNotFoundException
+    public static boolean getAnswer(Properties data)
     {
-        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-        out.writeObject(data);
-        out.flush();
-        if(in.readObject().toString().equals("true"))
-            return true;
-        else return false;
+        ObjectOutputStream out = null;
+        ObjectInputStream in = null;
+        try {
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
+            out.writeObject(data);
+            out.flush();
+            if(in.readObject().toString().equals("true"))
+                return true;
+            else return false;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
     
-    public static List getList(Properties data) throws IOException, ClassNotFoundException
+    public static List getList(Properties data)
     {
-        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-        out.writeObject(data);
-        out.flush();
-        return (List) in.readObject();
+        ObjectInputStream in = null;
+        ObjectOutputStream out = null;
+        try 
+        {
+                out = new ObjectOutputStream(socket.getOutputStream());
+                in = new ObjectInputStream(socket.getInputStream());
+                out.writeObject(data);
+                out.flush();
+                return (List) in.readObject();
+        } 
+        catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
     
     public static void sendAction(Properties data)

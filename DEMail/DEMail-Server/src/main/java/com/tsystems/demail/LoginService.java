@@ -1,28 +1,32 @@
 package com.tsystems.demail;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
 public class LoginService {
 
-    public static boolean connect(String phone, String password) 
+    public static List connect(String phone, String password) 
     {
         EntityManager em = Server.emf.createEntityManager();
         em.getTransaction().begin();
+        List ans = new ArrayList<String>();
+        ans.add("false");
         try 
         {
             String real_password;
         
-            real_password = em.createNativeQuery("select password from Accounts where mobile_phone='" + phone + "'").getSingleResult().toString();
+            real_password = em.createQuery("select password from Accounts where mobile_phone='" + phone + "'").getSingleResult().toString();
 
             if (password.equals(real_password)) {
-                return true;
+                return LoginDAO.connectToProfile(phone);
             }
         } catch (NoResultException ex) {
-            return false;
+            return ans;
         } finally {
             em.close();
         }
-        return false;
+        return ans;
     }
 }

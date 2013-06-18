@@ -7,10 +7,19 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.Properties;
 import javax.swing.JOptionPane;
+import com.tsystems.demail.common.ProtocolCommands;
+import com.tsystems.demail.common.ProtocolParameters;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class RegistrationProfile extends javax.swing.JFrame {
 
+    private ProtocolCommands pc;
+    private ProtocolParameters pp;
+    
     public RegistrationProfile() {
+        pc = new ProtocolCommands();
+        pp = new ProtocolParameters();
         initComponents();
     }
     private boolean clickBox = false;
@@ -287,15 +296,14 @@ public class RegistrationProfile extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, nameAlert + userAlert + passAlert
                     + rtpasswordAlert + phoneAlert + agreementAlert);
         } else {
-            Properties data = new Properties();
-            data.setProperty("KEY", "REG_PROFILE");
-            data.setProperty("USERNAME", username + "@demail.com");
-            data.setProperty("PASSWORD", password);
-            data.setProperty("FIRSTNAME", firstname);
-            data.setProperty("LASTNAME", lastname);
-            data.setProperty("PHONE", phone);
-            data.setProperty("BIRTHDAY", birthday.toString());
-            try {           
+                Properties data = new Properties();
+                data.setProperty(pp.KEY, pc.REG_PROFILE);
+                data.setProperty(pp.USERNAME, username + "@demail.com");
+                data.setProperty(pp.PASSWORD, password);
+                data.setProperty(pp.FIRSTNAME, firstname);
+                data.setProperty(pp.LASTNAME, lastname);
+                data.setProperty(pp.PHONE, phone);
+                data.setProperty(pp.BIRTHDAY, birthday.toString());
                 if (Client.getAnswer(data) == true) {
                     JOptionPane.showMessageDialog(rootPane, "Registration was successful. \nNow you can login to your profile.");
                     setVisible(false);
@@ -303,11 +311,6 @@ public class RegistrationProfile extends javax.swing.JFrame {
                 } else {
                     JOptionPane.showMessageDialog(rootPane, "User with that name or phone is already registered.");
                 }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } catch (ClassNotFoundException ex) {
-                ex.printStackTrace();
-            }
         }
     }//GEN-LAST:event_buttonSbmtActionPerformed
 

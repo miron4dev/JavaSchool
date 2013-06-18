@@ -58,6 +58,7 @@
         <module>application</module>
     <module>DEMail-Server</module>
     <module>DEMail-Client</module>
+    <module>DEMail-Common</module>
   </modules>
 
     <properties>

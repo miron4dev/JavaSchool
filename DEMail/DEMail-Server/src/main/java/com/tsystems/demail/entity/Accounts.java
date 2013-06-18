@@ -11,7 +11,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "Accounts")
@@ -36,8 +35,7 @@ public class Accounts implements Serializable
     @Column(nullable = false)
     private Date birth_day;
     
-    @OneToMany(mappedBy = "accounts")
-    @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+    @OneToMany(mappedBy = "accounts", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Mails> mails;
     
     public Accounts(){

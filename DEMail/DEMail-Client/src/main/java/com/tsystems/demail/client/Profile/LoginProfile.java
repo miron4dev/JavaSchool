@@ -3,6 +3,8 @@ package com.tsystems.demail.client.Profile;
 import com.tsystems.demail.client.App;
 import com.tsystems.demail.client.Client;
 import com.tsystems.demail.client.Validator;
+import com.tsystems.demail.common.ProtocolCommands;
+import com.tsystems.demail.common.ProtocolParameters;
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
@@ -10,7 +12,12 @@ import javax.swing.JOptionPane;
 
 public class LoginProfile extends javax.swing.JFrame {
 
+    private ProtocolCommands pc;
+    private ProtocolParameters pp;
+    
     public LoginProfile() {
+        pc = new ProtocolCommands();
+        pp = new ProtocolParameters();
         initComponents();
     }
     private final String[] arg = {};
@@ -112,27 +119,27 @@ public class LoginProfile extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonCnclActionPerformed
 
     private void buttonLgnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLgnActionPerformed
-        String phone = "+7" + fieldMPhone.getText();
-        String password = fieldPass.getText();
-        String phoneAlert = "", passAlert = "";
-        boolean check = true;
-        if (Validator.phoneChecking(phone) == false) {
-            phoneAlert = "Mobile phone is invalid.\n";
-            check = false;
-        }
-        if (password.length() <= 6) {
-            passAlert = "Password is too short.\n";
-            check = false;
-        }
-        if (check == false) {
-            JOptionPane.showMessageDialog(rootPane, phoneAlert + passAlert);
-            return;
-        }
-        Properties data = new Properties();
-        data.setProperty("KEY", "LOG_PROFILE");
-        data.setProperty("PHONE", phone);
-        data.setProperty("PASSWORD", password);
-        try {
+        
+            String phone = "+7" + fieldMPhone.getText();
+            String password = fieldPass.getText();
+            String phoneAlert = "", passAlert = "";
+            boolean check = true;
+            if (Validator.phoneChecking(phone) == false) {
+                phoneAlert = "Mobile phone is invalid.\n";
+                check = false;
+            }
+            if (password.length() <= 6) {
+                passAlert = "Password is too short.\n";
+                check = false;
+            }
+            if (check == false) {
+                JOptionPane.showMessageDialog(rootPane, phoneAlert + passAlert);
+                return;
+            }
+            Properties data = new Properties();
+            data.setProperty(pp.KEY, pc.LOG_PROFILE);
+            data.setProperty(pp.PHONE, phone);
+            data.setProperty(pp.PASSWORD, password);
             List list = Client.getList(data);
             if (list.get(0).toString().equals("false") == false) {
                 setVisible(false);
@@ -145,11 +152,6 @@ public class LoginProfile extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(rootPane, "Incorrect mobile phone or password.");
                 return;
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-        }
     }//GEN-LAST:event_buttonLgnActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing

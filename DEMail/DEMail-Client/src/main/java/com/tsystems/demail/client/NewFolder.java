@@ -1,5 +1,7 @@
 package com.tsystems.demail.client;
 
+import com.tsystems.demail.common.ProtocolCommands;
+import com.tsystems.demail.common.ProtocolParameters;
 import java.util.List;
 import java.util.Properties;
 import javax.swing.JOptionPane;
@@ -9,12 +11,16 @@ import javax.swing.tree.DefaultTreeModel;
 public class NewFolder extends javax.swing.JFrame {
 
     private static String username;
-
+    private ProtocolCommands pc;
+    private ProtocolParameters pp;
+    
     public static void setUsername(String aUsername) {
         username = aUsername;
     }
     
     public NewFolder() {
+        pc = new ProtocolCommands();
+        pp = new ProtocolParameters();
         initComponents();
     }
 
@@ -97,14 +103,14 @@ public class NewFolder extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(rootPane, "This folder is already exists.");
                 return;
             }
-            if (Validator.permitActionChecking(name) == false || Validator.systemFolderChecking(name)) {
+            if (Validator.permitActionChecking(name) == false || Validator.systemFolderChecking(name) || name.equals(username)) {
                 JOptionPane.showMessageDialog(rootPane, "You cannot create folders with system folder names.");
                 return;
             }
             Properties p = new Properties();
-            p.setProperty("KEY", "NEW_FOLDER");
-            p.setProperty("USERNAME", username);
-            p.setProperty("FOLDERNAME", name);
+            p.setProperty(pp.KEY, pc.NEW_FOLDER);
+            p.setProperty(pp.USERNAME, username);
+            p.setProperty(pp.FOLDERNAME, name);
             Client.sendAction(p);
             List list = Mail.getList();
             list.add(name);

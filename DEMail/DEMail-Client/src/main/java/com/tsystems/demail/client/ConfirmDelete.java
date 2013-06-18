@@ -1,5 +1,7 @@
 package com.tsystems.demail.client;
 
+import com.tsystems.demail.common.ProtocolCommands;
+import com.tsystems.demail.common.ProtocolParameters;
 import java.util.List;
 import java.util.Properties;
 import javax.swing.tree.MutableTreeNode;
@@ -8,7 +10,9 @@ import javax.swing.tree.DefaultTreeModel;
 public class ConfirmDelete extends javax.swing.JFrame {
 
     private static String foldername, username;
-
+    private ProtocolCommands pc;
+    private ProtocolParameters pp;
+    
     public static void setFoldername(String aFoldername) {
         foldername = aFoldername;
     }
@@ -18,6 +22,8 @@ public class ConfirmDelete extends javax.swing.JFrame {
     }
     
     public ConfirmDelete() {
+        pc = new ProtocolCommands();
+        pp = new ProtocolParameters();
         initComponents();
     }
     
@@ -98,9 +104,9 @@ public class ConfirmDelete extends javax.swing.JFrame {
         DefaultTreeModel model=(DefaultTreeModel)Mail.folders.getModel();
         model.nodesWereRemoved(parent,new int[]{index},null);
         Properties p = new Properties();
-        p.setProperty("KEY", "DEL_FOLDER");
-        p.setProperty("USERNAME", username);
-        p.setProperty("FOLDERNAME", foldername);
+        p.setProperty(pp.KEY, pc.DELETE_FOLDER);
+        p.setProperty(pp.USERNAME, username);
+        p.setProperty(pp.FOLDERNAME, foldername);
         Client.sendAction(p);
         List list = Mail.getList();
         list.remove(foldername);

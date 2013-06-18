@@ -1,18 +1,24 @@
 package com.tsystems.demail.client.Profile;
 
 import com.tsystems.demail.client.Client;
+import com.tsystems.demail.common.ProtocolCommands;
+import com.tsystems.demail.common.ProtocolParameters;
 import java.util.Properties;
 
 public class ConfirmDelete extends javax.swing.JFrame {
 
     private static String username;
     private static final String[] arg = {};
-
+    private ProtocolCommands pc;
+    private ProtocolParameters pp;
+    
     public static void setUsername(String aUsername) {
         username = aUsername;
     }
     
     public ConfirmDelete() {
+        pc = new ProtocolCommands();
+        pp = new ProtocolParameters();
         initComponents();
     }
 
@@ -84,8 +90,8 @@ public class ConfirmDelete extends javax.swing.JFrame {
 
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
         Properties data = new Properties();
-        data.setProperty("KEY", "DELETE_MAIL");
-        data.setProperty("USERNAME", username);
+        data.setProperty(pp.KEY, pc.DELETE_MAIL);
+        data.setProperty(pp.USERNAME, username);
         Client.sendAction(data);
         setVisible(false);
         MailChooser.main(arg);

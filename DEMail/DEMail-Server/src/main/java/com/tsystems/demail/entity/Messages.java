@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.tsystems.demail.entity;
 
 import java.io.Serializable; 
@@ -12,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -44,6 +41,10 @@ public class Messages implements Serializable
     @Column(nullable = false)
     private int mail_id;
 
+    @ManyToOne
+    @JoinColumn(name="folder_id", referencedColumnName = "id", insertable=false, updatable=false)
+    private Folders folders;
+    
     public Messages() {
     }
     
@@ -144,6 +145,14 @@ public class Messages implements Serializable
 
     public void setMail_id(int mail_id) {
         this.mail_id = mail_id;
+    }
+
+    public Folders getFolders() {
+        return folders;
+    }
+
+    public void setFolders(Folders folders) {
+        this.folders = folders;
     }
 
 }

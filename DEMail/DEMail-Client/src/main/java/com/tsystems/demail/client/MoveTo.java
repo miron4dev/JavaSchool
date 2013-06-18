@@ -1,6 +1,8 @@
 
 package com.tsystems.demail.client;
 
+import com.tsystems.demail.common.ProtocolCommands;
+import com.tsystems.demail.common.ProtocolParameters;
 import java.util.Properties;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -11,8 +13,11 @@ public class MoveTo extends javax.swing.JFrame {
     private static int row;
     private static JTable table;
     private static String id;
-    
+    private ProtocolCommands pc;
+    private ProtocolParameters pp;
     public MoveTo(String[] list, int row, JTable table, String id) {
+        pc = new ProtocolCommands();
+        pp = new ProtocolParameters();
         MoveTo.list = list;
         MoveTo.row = row;
         MoveTo.table = table;
@@ -98,9 +103,9 @@ public class MoveTo extends javax.swing.JFrame {
         table.setModel(model);
         String foldername = boxList.getSelectedItem().toString();
         Properties p = new Properties();
-        p.setProperty("KEY", "MOVE_MESSAGE");
-        p.setProperty("ID", id);
-        p.setProperty("FOLDERNAME", foldername);
+        p.setProperty(pp.KEY, pc.MOVE_MESSAGE);
+        p.setProperty(pp.ID, id);
+        p.setProperty(pp.FOLDERNAME, foldername);
         Client.sendAction(p);
         setVisible(false);
     }//GEN-LAST:event_buttonMoveActionPerformed

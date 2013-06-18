@@ -1,5 +1,7 @@
 package com.tsystems.demail.client;
 
+import com.tsystems.demail.common.ProtocolCommands;
+import com.tsystems.demail.common.ProtocolParameters;
 import java.util.List;
 import java.util.Properties;
 import javax.swing.JOptionPane;
@@ -9,12 +11,17 @@ import javax.swing.tree.MutableTreeNode;
 
 public class RenameFolder extends javax.swing.JFrame {
 
-    public RenameFolder() {
-        initComponents();
-    }
     private static MutableTreeNode folderName = null;
     private static String currentFolderName;
     private static String username;
+    private ProtocolCommands pc;
+    private ProtocolParameters pp;
+    
+    public RenameFolder() {
+        pc = new ProtocolCommands();
+        pp = new ProtocolParameters();
+        initComponents();
+    }
     
     public static void setActionFields(MutableTreeNode folderName) {
         RenameFolder.folderName = folderName;
@@ -102,17 +109,17 @@ public class RenameFolder extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "That folder is already exists.");
             return;
         }
-        if (Validator.permitActionChecking(name) == false || Validator.systemFolderChecking(name)) {
+        if (Validator.permitActionChecking(name) == false || Validator.systemFolderChecking(name) || name.equals(username)) {
             JOptionPane.showMessageDialog(rootPane, "You cannot rename folders to system folder names.");
             return;
         }
         if (name.length() > 0) {
             folderName.setUserObject(new DefaultMutableTreeNode(name));
             Properties p = new Properties();
-            p.setProperty("KEY", "REN_FOLDER");
-            p.setProperty("USERNAME", username);
-            p.setProperty("FOLDERNAME", currentFolderName);
-            p.setProperty("NEWFOLDERNAME", name);
+            p.setProperty(pp.KEY, pc.RENAME_FOLDER);
+            p.setProperty(pp.USERNAME, username);
+            p.setProperty(pp.FOLDERNAME, currentFolderName);
+            p.setProperty(pp.NEWFOLDERNAME, name);
             Client.sendAction(p);
             List list = Mail.getList();
             list.remove(currentFolderName);

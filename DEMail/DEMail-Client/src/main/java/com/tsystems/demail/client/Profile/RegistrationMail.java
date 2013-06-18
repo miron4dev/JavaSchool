@@ -2,14 +2,20 @@ package com.tsystems.demail.client.Profile;
 
 import com.tsystems.demail.client.Client;
 import com.tsystems.demail.client.Validator;
+import com.tsystems.demail.common.ProtocolCommands;
+import com.tsystems.demail.common.ProtocolParameters;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class RegistrationMail extends javax.swing.JFrame {
 
     private static final String[] arg = {};
     private static String phone, real_pass;
+    private ProtocolCommands pc;
+    private ProtocolParameters pp;
 
     public static void setPhone(String aPhone) {
         phone = aPhone;
@@ -20,6 +26,8 @@ public class RegistrationMail extends javax.swing.JFrame {
     }
     
     public RegistrationMail() {
+        pc = new ProtocolCommands();
+        pp = new ProtocolParameters();
         initComponents();
     }
 
@@ -139,25 +147,19 @@ public class RegistrationMail extends javax.swing.JFrame {
         else real_passAlert = "Password is wrong.";
         if(userCheck && passCheck && real_passCheck == true)
         {
-            Properties data = new Properties();
-            data.setProperty("KEY", "REG_MAIL");
-            data.setProperty("USERNAME", username + "@demail.com");
-            data.setProperty("PASSWORD", password);
-            data.setProperty("PHONE", phone);
-            try {
+                Properties data = new Properties();
+                data.setProperty(pp.KEY, pc.REG_MAIL);
+                data.setProperty(pp.USERNAME, username + "@demail.com");
+                data.setProperty(pp.PASSWORD, password);
+                data.setProperty(pp.PHONE, phone);
                 if(Client.getAnswer(data) == true){
                     JOptionPane.showMessageDialog(rootPane, username + "@demail.com was successfuly registered. Now you can log in.\n");
                     setVisible(false);
                     MailChooser.main(arg);
                 }
                 else{
-                    JOptionPane.showMessageDialog(rootPane, "Mail with that name is already registered.");
-                }                    
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            } catch (ClassNotFoundException ex) {
-                ex.printStackTrace();
-            }
+                   JOptionPane.showMessageDialog(rootPane, "Mail with that name is already registered.");
+                }
         }
         else{
             JOptionPane.showMessageDialog(rootPane, userAlert + passAlert + real_passAlert);
@@ -166,6 +168,7 @@ public class RegistrationMail extends javax.swing.JFrame {
 
     private void buttonCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCancelActionPerformed
         setVisible(false);
+        MailChooser.main(arg);
     }//GEN-LAST:event_buttonCancelActionPerformed
 
     public static void main(String args[]) {

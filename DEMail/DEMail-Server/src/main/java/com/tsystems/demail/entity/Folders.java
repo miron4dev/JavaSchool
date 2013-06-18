@@ -6,12 +6,19 @@
 package com.tsystems.demail.entity;
 
 import java.io.Serializable; 
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "Folders")
@@ -28,6 +35,15 @@ public class Folders implements Serializable
     @Column(nullable = false)
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name="mail_id", referencedColumnName = "id", insertable=false, updatable=false)
+    private Mails mails;
+    
+    @OneToMany(mappedBy = "folders")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @Cascade(org.hibernate.annotations.CascadeType.DELETE_ORPHAN)
+    private Set<Messages> messages;
+    
     public Folders() {
     }
     
@@ -83,6 +99,22 @@ public class Folders implements Serializable
 
     public void setMail_id(int mail_id) {
         this.mail_id = mail_id;
+    }
+
+    public Mails getMails() {
+        return mails;
+    }
+
+    public void setMails(Mails mails) {
+        this.mails = mails;
+    }
+
+    public Set<Messages> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Set<Messages> messages) {
+        this.messages = messages;
     }
 
 }

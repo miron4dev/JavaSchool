@@ -1,5 +1,6 @@
 package com.tsystems.demail.client;
 
+import com.tsystems.demail.common.ProtocolParameters;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -42,8 +43,9 @@ public class Validator
     
     public static boolean permitActionChecking(String nodeName)
     {
-        if(nodeName.equals("Inbox") || nodeName.equals("Sent") || nodeName.equals("Drafts") || 
-           nodeName.equals("Spam") || nodeName.equals("Trash") || nodeName.equals("Priority"))
+        ProtocolParameters pp = new ProtocolParameters();
+        if(nodeName.equals(pp.INBOX) || nodeName.equals(pp.SENTS) || nodeName.equals(pp.DRAFTS) || 
+           nodeName.equals(pp.SPAM) || nodeName.equals(pp.TRASH) || nodeName.equals(pp.PRIORITY))
         {
             return false;
         }
@@ -52,7 +54,8 @@ public class Validator
     
     public static boolean systemFolderChecking(String nodeName)
     {
-        if(nodeName.equals("UserMail") || nodeName.equals("DE-Mail") || nodeName.equals("Folders"))
+        ProtocolParameters pp = new ProtocolParameters();
+        if(nodeName.equals(pp.DEMAIL) || nodeName.equals(pp.USERFOLDERNAME))
         {
             return true;
         }

@@ -1,12 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.tsystems.demail.entity;
 
 import java.io.Serializable; 
 import java.sql.Date;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,9 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "Mails")
@@ -39,6 +35,9 @@ public class Mails implements Serializable
     @ManyToOne
     @JoinColumn(name="user_id" , referencedColumnName="id", insertable=false, updatable=false)
     private Accounts accounts;
+    
+    @OneToMany(mappedBy = "mails", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Folders> folders;
     
     public Mails() {
     }
@@ -114,6 +113,22 @@ public class Mails implements Serializable
 
     public void setProfile(Accounts accounts) {
         this.accounts = accounts;
+    }
+
+    public Accounts getAccounts() {
+        return accounts;
+    }
+
+    public void setAccounts(Accounts accounts) {
+        this.accounts = accounts;
+    }
+
+    public Set<Folders> getFolders() {
+        return folders;
+    }
+
+    public void setFolders(Set<Folders> folders) {
+        this.folders = folders;
     }
 
 }

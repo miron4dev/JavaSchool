@@ -152,7 +152,8 @@ public class OpenMessage extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonReplyActionPerformed
 
     private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
-        Mail.deleteMessage(row);
+        Mail m = new Mail();
+        m.deleteMessage(row);
         setVisible(false);
     }//GEN-LAST:event_buttonDeleteActionPerformed
 
