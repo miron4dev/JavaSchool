@@ -18,6 +18,8 @@ public class MailBean implements Serializable{
     private List fullFolderList;
     private String currentFolder;
     private String temp;
+    private String temp2;
+    private String temp3;
     private MessageBean selectedMail;
     private TreeNode selectedFolder;
     private String selectedFolderName;
@@ -101,5 +103,21 @@ public class MailBean implements Serializable{
 
     public void setButtonAction(UIComponent buttonAction) {
         this.buttonAction = buttonAction;
+    }
+
+    public String getTemp2() {
+        return temp2;
+    }
+
+    public void setTemp2(String temp2) {
+        this.temp2 = temp2;
+    }
+
+    public String getTemp3() {
+        return temp3;
+    }
+
+    public void setTemp3(String temp3) {
+        this.temp3 = temp3;
     }
 }

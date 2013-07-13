@@ -4,6 +4,7 @@ import com.tsystems.demail.Beans.MailBean;
 import com.tsystems.demail.Beans.MessageBean;
 import com.tsystems.demail.Beans.UserBean;
 import com.tsystems.demail.Constants.Localization;
+import com.tsystems.demail.Constants.Parameters;
 import com.tsystems.demail.DAO.DataDAO;
 import com.tsystems.demail.Service.DataService;
 import com.tsystems.demail.Service.LoginService;

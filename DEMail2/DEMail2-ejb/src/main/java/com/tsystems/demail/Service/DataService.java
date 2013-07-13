@@ -1,10 +1,14 @@
 package com.tsystems.demail.Service;
 
 import com.tsystems.demail.Constants.JMailData;
+import com.tsystems.demail.Constants.Parameters;
 import com.tsystems.demail.DAO.DataDAO;
+import com.tsystems.demail.DAO.LoginDAO;
 import com.tsystems.demail.DAO.ValidationDAO;
 import com.tsystems.demail.JavaMail.ForgotPassword;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -14,6 +18,9 @@ public class DataService {
 
     @EJB
     DataDAO dataDAO;
+    
+    @EJB
+    LoginDAO loginDAO;
 
     @EJB
     ValidationDAO validationDAO;

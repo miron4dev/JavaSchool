@@ -1,6 +1,8 @@
 package com.tsystems.demail.DAO;
 
 import com.tsystems.demail.Constants.Localization;
+import com.tsystems.demail.Constants.Parameters;
+import com.tsystems.demail.Entity.Accounts;
 import com.tsystems.demail.Entity.Mails;
 import com.tsystems.demail.Entity.Folders;
 import com.tsystems.demail.Entity.Messages;
@@ -9,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Properties;
 
 @Stateless
 public class DataDAO {
@@ -72,7 +75,12 @@ public class DataDAO {
     }
 
     public void deleteMessage(String id){
-        em.remove(em.find(Messages.class, Integer.parseInt(id)));
+        int folderId = Integer.parseInt(em.createQuery("select folder_id from Messages where id=" + id).getSingleResult().toString());
+        String folderName = em.createQuery("select name from Folders where id=" + folderId).getSingleResult().toString();
+        if(folderName.equals(new Localization().TRASH)){
+            em.remove(em.find(Messages.class, Integer.parseInt(id)));
+        }
+        else moveMessage(new Localization().TRASH, id);
     }
 
     public void moveMessage(String folderName, String id){
