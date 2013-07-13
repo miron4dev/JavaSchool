@@ -15,7 +15,7 @@ public class DataDAO {
 
     @PersistenceContext(unitName = "NewPersistenceUnit")
     EntityManager em;
-
+    
     public List getProfileData(String phone){;
         List data = em.createQuery("select first_name, last_name, mobile_phone, password from Accounts where mobile_phone='" + phone + "'").getResultList();
         List mails = em.createQuery("select name from Mails where user_id=(select id from Accounts where mobile_phone='" + phone +"')").getResultList();

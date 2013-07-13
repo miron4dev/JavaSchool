@@ -11,6 +11,7 @@
     <title>DEMail</title>
     <h:outputStylesheet library="login/css" name="style.css"/>
     <h:outputStylesheet library="client" name="styles.css"/>
+    <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/client/favicon.ico" />
     <style type="text/css">
         .alert{
             margin: 20px 0;
@@ -42,13 +43,13 @@
                 </p:password>
             </p>
             <p style="text-align: center">
-                <p:commandButton id="phoneLogin" update="@form" binding="#{mailBean.buttonAction}" value="Login" action="#{dataBean.loginProfile}"/>
+                <p:commandButton id="phoneLogin" ajax="false" update="@form" binding="#{mailBean.buttonAction}" value="Login" action="#{dataBean.loginProfile}"/>
             </p>
         </h:form>
     </div>
     <h:form style="text-align: center" class="login-help">
         <p><h:commandLink action="registration?faces-redirect=true" value="Create Account"></h:commandLink></p>
-        <p><h:commandLink action="forgot?faces-redirect=true" value="Forgot Password"></h:commandLink></p>
+        <p><h:commandLink action="forgot?faces-redirect=true" value="Forgot Password?"></h:commandLink></p>
     </h:form>
 </h:body>
 

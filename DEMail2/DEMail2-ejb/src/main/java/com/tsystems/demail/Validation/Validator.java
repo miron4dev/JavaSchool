@@ -31,4 +31,8 @@ public class Validator {
     public boolean passChecking(String password) {
         return password.length() > 6;
     }
+    
+    public boolean gmailChecking(String mail){
+        return mail.length() >=15 && mail.length() <= 39 && regularChecking(mail, "[a-zA-Z]{1}\\w*@gmail.com");
+    }
 }

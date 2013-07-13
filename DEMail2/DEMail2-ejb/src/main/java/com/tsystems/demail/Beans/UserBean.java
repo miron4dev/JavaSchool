@@ -16,6 +16,7 @@ public class UserBean implements Serializable{
     private String mobile_phone;
     private String password;
     private String username;
+    private String second_mail;
     private Date birth_day;
     private List<String> userList;
     private boolean profileLoggedIn;
@@ -91,5 +92,13 @@ public class UserBean implements Serializable{
 
     public void setMailLoggedIn(boolean mailLoggedIn) {
         this.mailLoggedIn = mailLoggedIn;
+    }
+
+    public String getSecond_mail() {
+        return second_mail;
+    }
+
+    public void setSecond_mail(String second_mail) {
+        this.second_mail = second_mail;
     }
 }

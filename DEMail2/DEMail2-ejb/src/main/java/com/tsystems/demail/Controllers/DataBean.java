@@ -27,6 +27,9 @@ public class DataBean{
 
     @Inject
     private MailBean mailBean;
+    
+    @EJB
+    private MessageBean messageBean;
 
     @EJB
     private DataDAO dataDAO;
@@ -39,10 +42,24 @@ public class DataBean{
 
     @EJB
     private DataService dataService;
+    
 
-    @EJB
-    private MessageBean messageBean;
-
+    public String forgotPassword(){
+        boolean ans = dataService.passwordReturning(userBean.getMobile_phone());
+        String alert = null;
+        
+        if(ans == false)
+            alert = "Phone is not registered or user not have secondary mail.";
+        else
+        {
+           alert = "Password sent to your mail.";
+               
+        }
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(mailBean.getButtonAction().getClientId(context), new FacesMessage(alert));
+        return null;
+    }
+    
     public String createMail(){
         if(!mailBean.getTemp().equals(userBean.getPassword())){
             FacesContext context = FacesContext.getCurrentInstance();

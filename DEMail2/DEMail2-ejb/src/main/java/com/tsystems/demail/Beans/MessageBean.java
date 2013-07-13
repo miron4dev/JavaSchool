@@ -1,12 +1,13 @@
 package com.tsystems.demail.Beans;
 
-import javax.ejb.Stateless;
 import javax.inject.Named;
 import java.util.Date;
+import javax.ejb.Stateless;
+import javax.faces.component.UIComponent;
 
 @Named
 @Stateless
-public class MessageBean {
+public class MessageBean{
 
     private String from;
     private String to;

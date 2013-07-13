@@ -39,5 +39,10 @@
     <validator-id>uNameValidation</validator-id>
     <validator-class>com.tsystems.demail.Validation.UNameValidation</validator-class>
 </validator>
+
+<validator>
+    <validator-id>gmailValidation</validator-id>
+    <validator-class>com.tsystems.demail.Validation.GMailValidation</validator-class>
+</validator>
     
 </faces-config>

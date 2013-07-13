@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Forgot password?</title>
+        <h:outputStylesheet library="login/css" name="style.css"/>
+        <h:outputStylesheet library="client" name="styles.css"/>
+        <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/client/favicon.ico" />
+        <style type="text/css">
+            .alert{
+                margin: 20px 0;
+                font-size: 11px;
+                color: red;
+                text-align: center;
+            }
+            .ui-state-disabled {
+                cursor: default !important;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <div class="login" style="margin-top: 5%">
+            <h:form>
+                <p>
+                    <h:outputLabel for="phone2">Phone: <h:message class="alert" for="phone2"/> <h:message class="alert" for="passForgot"/></h:outputLabel>
+                    <p:inputText id="phone2" value="#{userBean.mobile_phone}">
+                        <f:validator validatorId="phoneValidation"/>
+                    </p:inputText>
+                    <p:watermark for="phone2" value="+79123456789"/>
+                </p>
+                <p style="text-align: center">
+                    <p:commandButton ajax="false" id="passForgot" update="@form" binding="#{mailBean.buttonAction}" value="Send password to my mail" action="#{dataBean.forgotPassword}"/>
+                </p>
+            </h:form>
+        </div>
+        <h:form style="text-align: center" class="login-help">
+            <p><h:commandLink action="index?faces-redirect=true" value="Back"></h:commandLink></p>
+        </h:form>
+    </h:body>
+</html>

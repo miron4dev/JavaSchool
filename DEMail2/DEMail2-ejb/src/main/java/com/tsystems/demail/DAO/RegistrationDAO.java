@@ -14,8 +14,8 @@ public class RegistrationDAO {
     @PersistenceContext(unitName = "NewPersistenceUnit")
     EntityManager em;
 
-    public void regProfile(String first_name, String last_name, String mobile_phone, String password, Date birth_day, String username){
-        Accounts acc = new Accounts(password, first_name, last_name, mobile_phone, birth_day);
+    public void regProfile(String first_name, String last_name, String mobile_phone, String password, Date birth_day, String username, String second_mail){
+        Accounts acc = new Accounts(password, first_name, last_name, mobile_phone, birth_day, second_mail);
         em.persist(acc);
         regMail(username, mobile_phone);
     }

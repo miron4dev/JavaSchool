@@ -16,6 +16,7 @@
     <title>Registration</title>
     <h:outputStylesheet library="login/css" name="style.css"/>
     <h:outputStylesheet library="client" name="styles.css"/>
+    <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/client/favicon.ico" />
     <style type="text/css">
         .alert{
 
@@ -75,6 +76,13 @@
                     <f:validator validatorId="rtPassValidation"/>
                     <f:attribute name="passwordComponent" value="#{passwordComponent}"/>
                 </p:password>
+            </p>
+            <p>
+                <h:outputLabel for="second_mail">Secondary mail (Optional): <h:message class="alert" for="second_mail"/></h:outputLabel>
+                <p:inputText id="second_mail" value="#{userBean.second_mail}">
+                    <f:validator validatorId="gmailValidation"/>
+                </p:inputText>
+                <p:watermark for="second_mail" value="example@gmail.com"/>
             </p>
             <p>
                 <h:outputLabel for="popupCal">Birthday: <h:message class="alert" for="popupCal"/></h:outputLabel>

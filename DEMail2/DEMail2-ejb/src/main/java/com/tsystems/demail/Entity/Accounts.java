@@ -27,6 +27,9 @@ public class Accounts {
     @Column(nullable = false)
     private Date birth_day;
 
+    @Column(unique = true)
+    private String second_mail;
+    
     @OneToMany(mappedBy = "accounts", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Mails> mails;
 
@@ -34,13 +37,14 @@ public class Accounts {
 
     }
 
-    public Accounts(String password, String first_name, String last_name, String mobile_phone, Date birth_day)
+    public Accounts(String password, String first_name, String last_name, String mobile_phone, Date birth_day, String second_mail)
     {
         this.password = password;
         this.first_name = first_name;
         this.last_name = last_name;
         this.mobile_phone = mobile_phone;
         this.birth_day = birth_day;
+        this.second_mail = second_mail;
     }
     public int getId() {
         return id;
@@ -96,5 +100,13 @@ public class Accounts {
 
     public void setBirth_day(Date birth_day) {
         this.birth_day = birth_day;
+    }
+
+    public String getSecond_mail() {
+        return second_mail;
+    }
+
+    public void setSecond_mail(String second_mail) {
+        this.second_mail = second_mail;
     }
 }

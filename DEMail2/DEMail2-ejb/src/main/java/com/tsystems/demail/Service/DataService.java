@@ -1,7 +1,10 @@
 package com.tsystems.demail.Service;
 
+import com.tsystems.demail.Constants.JMailData;
 import com.tsystems.demail.DAO.DataDAO;
 import com.tsystems.demail.DAO.ValidationDAO;
+import com.tsystems.demail.JavaMail.ForgotPassword;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -14,7 +17,22 @@ public class DataService {
 
     @EJB
     ValidationDAO validationDAO;
+   
+    @EJB
+    ForgotPassword forgotPassword;
 
+    public boolean passwordReturning(String phone){
+        List<String> answer = validationDAO.mailExChecking(phone);
+        if(answer.get(0).equals("false")){
+            return false;
+        }
+        else{
+            if ((forgotPassword.sendPass(phone, answer.get(0), answer.get(1))).equals("Done"))
+                return true;
+            else return false;
+        }
+    }
+    
     public boolean folderCreateChecking(String username, String folderName){
         if(validationDAO.folderChecking(username, folderName) == true){
             dataDAO.createFolder(username, folderName);

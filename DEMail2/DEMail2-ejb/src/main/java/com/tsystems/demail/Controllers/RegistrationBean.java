@@ -4,10 +4,7 @@ import com.tsystems.demail.Beans.UserBean;
 import com.tsystems.demail.Service.RegistrationService;
 
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
-import javax.ejb.Stateless;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -26,14 +23,12 @@ public class RegistrationBean {
     private RegistrationService registrationService;
 
     public String add(){
-        System.out.println(userBean.getBirth_day());
-        System.out.println(userBean.getBirth_day().getTime());
         java.sql.Date birth_day2 = new java.sql.Date(userBean.getBirth_day().getTime());
-        String answer =  registrationService.profileChecking(userBean.getFirst_name(), userBean.getLast_name(), userBean.getMobile_phone(), userBean.getPassword(), birth_day2, userBean.getUsername());
+        String answer =  registrationService.profileChecking(userBean.getFirst_name(), userBean.getLast_name(), userBean.getMobile_phone(), userBean.getPassword(), birth_day2, userBean.getUsername(), userBean.getSecond_mail());
         if(answer.equals("false"))
         {
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(profileReg.getClientId(context), new FacesMessage("User with that name or phone is already exist."));
+            context.addMessage(profileReg.getClientId(context), new FacesMessage("User with that name, phone or secondary mail is already exist."));
             return null;
         }
         else{
