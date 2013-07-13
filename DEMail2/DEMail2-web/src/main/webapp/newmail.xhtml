@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: eugene
+  Date: 7/1/13
+  Time: 2:42 AM
+-->
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Create new mail</title>
+    <h:outputStylesheet library="login/css" name="style.css"/>
+    <h:outputStylesheet library="client" name="styles.css"/>
+    <style type="text/css">
+        .alert{
+            margin: 20px 0;
+            font-size: 11px;
+            color: red;
+            text-align: center;
+        }
+        form{
+            display: inline;
+            float: inherit;
+        }
+        div{
+            clear:both;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <div class="login" style="margin-top: 5%">
+        <h:form>
+            <p>
+                <h:outputLabel for="mail">Mail: <h:message class="alert" for="mail"/> <h:message class="alert" for="mailReg"/></h:outputLabel>
+                <br/>
+                <p:inputText id="mail" value="#{userBean.username}">
+                    <f:validator validatorId="uNameValidation"/>
+                </p:inputText>
+            </p>
+            <p>
+                <h:outputLabel for="password">Password: <h:message class="alert" for="password"/></h:outputLabel>
+                <br/>
+                <p:password id="password" value="#{mailBean.temp}">
+                    <f:validator validatorId="passValidation"/>
+                </p:password>
+            </p>
+            <br/>
+            <p:commandButton style="text-align: right" id="mailReg" binding="#{mailBean.buttonAction}" update="@form" value="Create" action="#{dataBean.createMail}"/>
+        </h:form>
+        <h:form>
+            <p:commandButton value="Go Back" action="#{dataBean.loginProfile}"/>
+        </h:form>
+    </div>
+</h:body>
+
+</html>

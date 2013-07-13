@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: eugene
+  Date: 7/4/13
+  Time: 1:51 AM
+-->
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+    <title>DEMail Client</title>
+    <h:outputStylesheet library="client" name="styles.css"/>
+    <style type="text/css">
+        .nestedUnit {
+            border: 0px none !important;
+        }
+
+        .ui-layout-center .ui-layout-resizer {
+            border: 1px solid #A8A8A8 !important;
+        }
+
+        .ui-tree-item span {
+            float: left !important;
+        }
+
+        .ui-tree {
+            border: 0px none !important;
+        }
+
+        .ui-tabs {
+            border: 0px none !important;
+        }
+
+        body {
+            background: #0ca3d2;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <p:layout fullPage="true">
+
+        <p:layoutUnit position="north" size="40">
+            <p:commandButton value="New Message" onclick="newMsg.show();" icon="ui-icon-document"/>
+            <p:commandButton value="New Folder" onclick="newFolder.show();" icon="ui-icon-bookmark"/>
+            <p:commandButton value="Rename Folder" onclick="renameFolder.show();" icon="ui-icon-pencil"/>
+            <p:commandButton value="Delete Folder" onclick="deleteFolder.show();" icon="ui-icon-close"/>
+            <p:commandButton value="Refresh" actionListener="#{dataBean.dataUpdate}" icon="ui-icon-refresh" update=":leftForm, :renameForm, :deleteForm, :moveMsgForm, :tableView"/>
+            <p:commandButton value="Edit Profile" icon="ui-icon-gear"/>
+            <p:commandButton value="Logout" action="#{dataBean.logoutMail}" icon="ui-icon-power"/>
+        </p:layoutUnit>
+
+        <p:layoutUnit position="west" size="200" header="#{userBean.username}">
+            <h:form id="leftForm">
+                <p:tree id="treeFolder" value="#{mailbox.mailboxes}" var="box" selectionMode="single" selection="#{mailBean.selectedFolder}"
+                        dynamic="true" cache="false" style="width:170px">
+                    <p:treeNode icon="ui-icon-document">
+                        <h:outputText value="#{box}"/>
+                    </p:treeNode>
+
+                    <p:treeNode type="i" icon="ui-icon-mail-closed">
+                        <h:outputText value="#{box}"/>
+                    </p:treeNode>
+
+                    <p:treeNode type="s" icon="ui-icon-transfer-e-w">
+                        <h:outputText value="#{box}"/>
+                    </p:treeNode>
+
+                    <p:treeNode type="d" icon="ui-icon-scissors">
+                        <h:outputText value="#{box}"/>
+                    </p:treeNode>
+
+                    <p:treeNode type="t" icon="ui-icon-trash">
+                        <h:outputText value="#{box}"/>
+                    </p:treeNode>
+
+                    <p:treeNode type="sp" icon="ui-icon-locked">
+                        <h:outputText value="#{box}"/>
+                    </p:treeNode>
+
+                    <p:treeNode type="f" icon="ui-icon-tag">
+                        <h:outputText value="#{box}"/>
+                    </p:treeNode>
+
+                    <p:ajax event="select" listener="#{dataBean.getMessages}" update=":tableView" />
+                </p:tree>
+            </h:form>
+        </p:layoutUnit>
+
+        <p:layoutUnit position="center" size="50%" styleClass="nestedUnit">
+            <p:tabView id="tableView">
+
+                <p:tab title="#{mailBean.selectedFolderName}">
+
+                    <h:form id="tableForm">
+
+                        <p:dataTable var="mail" value="#{mailBean.messages}" styleClass="table" style="text-align: center" rowKey="#{mail.id}"
+                                     selection="#{mailBean.selectedMail}" selectionMode="single">
+
+                            <p:ajax event="rowSelect" update=":currentMsgForm" oncomplete="viewMsg.show()" />
+
+                            <p:column headerText="From">
+                                #{mail.from}
+                            </p:column>
+
+                            <p:column headerText="Subject">
+                                #{mail.subject}
+                            </p:column>
+
+                            <p:column headerText="Date">
+                                #{mail.date}
+                            </p:column>
+
+                        </p:dataTable>
+
+                    </h:form>
+
+                </p:tab>
+
+            </p:tabView>
+        </p:layoutUnit>
+
+    </p:layout>
+
+    <p:ajaxStatus style="width:48px;height:48px;display:block;position:fixed;right:0;top:560px;z-index:100">
+        <f:facet name="start">
+            <p:graphicImage value="resources/client/loader.gif"/>
+        </f:facet>
+
+        <f:facet name="complete">
+            <h:outputText value=""/>
+        </f:facet>
+    </p:ajaxStatus>
+
+    <p:dialog header="Enter new folder name" widgetVar="newFolder" resizable="false">
+        <h:form>
+
+            <h:panelGrid columns="2" style="margin-bottom:10px">
+                <h:outputLabel for="foldername" value="New Folder:"/>
+                <p:inputText id="foldername" value="#{mailBean.temp}" required="true" requiredMessage="Folder name cannot be null."/>
+            </h:panelGrid>
+            <div style="text-align: center">
+            <p:commandButton value="Create" actionListener="#{dataBean.folderCreate}" oncomplete="newFolder.hide();" update=":leftForm, :deleteForm, :renameForm, :moveMsgForm, :msg"/>
+            </div>
+        </h:form>
+    </p:dialog>
+
+    <p:dialog header="Enter new folder data" widgetVar="renameFolder" resizable="false">
+        <h:form id="renameForm">
+            <h:panelGrid columns="2" style="margin-bottom: 10px">
+                <h:outputLabel for="folderListRen" value="Choose folder: "/>
+                <p:selectOneMenu id="folderListRen" value="#{mailBean.currentFolder}">
+                    <f:selectItems value="#{mailBean.folderList}"/>
+                    <p:ajax event="change" update="@this"/>
+                </p:selectOneMenu>
+                <h:outputLabel for="newfoldername" value="New folder name: "/>
+                <p:inputText id="newfoldername" value="#{mailBean.temp}" required="true" requiredMessage="Folder name cannot be null."/>
+            </h:panelGrid>
+            <div style="text-align: center">
+            <p:commandButton value="Rename" actionListener="#{dataBean.folderRename}" oncomplete="renameFolder.hide();" update=":leftForm, :renameForm, :deleteForm, :moveMsgForm, :msg"/>
+            </div>
+        </h:form>
+    </p:dialog>
+
+    <p:dialog header="Choose folder to delete" widgetVar="deleteFolder" resizable="false">
+        <h:form id="deleteForm">
+            <h:panelGrid columns="2" style="margin-bottom: 10px">
+                <h:outputLabel for="folderListDel" value="Choose folder: "/>
+                <p:selectOneMenu id="folderListDel" value="#{mailBean.currentFolder}">
+                    <f:selectItems value="#{mailBean.folderList}"/>
+                    <p:ajax event="change" update="@this"/>
+                </p:selectOneMenu>
+            </h:panelGrid>
+            <div style="text-align: center">
+                <p:commandButton value="Delete" actionListener="#{dataBean.folderDelete}" oncomplete="deleteFolder.hide();" update=":leftForm, :renameForm, :deleteForm, :moveMsgForm, :msg"/>
+            </div>
+        </h:form>
+    </p:dialog>
+
+    <p:dialog widgetVar="newMsg" header="New Message" resizable="false" width="750" height="545" modal="true" showEffect="fade" hideEffect="fade">
+
+        <h:form id="newMsgForm">
+
+            <h:panelGrid columns="2" cellspacing="5">
+                <h:outputLabel for="to" value="To: "/>
+                <p:inputText id="to" size="50" value="#{messageBean.to}" required="true" requiredMessage="Field 'To' cannot be null."/>
+
+                <h:outputLabel for="subject" value="Subject: "/>
+                <p:inputText id="subject" size="50" value="#{messageBean.subject}"/>
+            </h:panelGrid>
+
+            <p:separator/>
+
+            <p:editor widgetVar="editor" width="715" height="415" value="#{messageBean.body}" required="true" requiredMessage="Message cannot be null."/>
+
+            <p:separator/>
+
+            <p:commandButton value="Send" oncomplete="newMsg.hide();" actionListener="#{dataBean.messageSend}" update=":msg"/>
+            <p:commandButton value="Cancel" onclick="newMsg.hide();"/>
+
+        </h:form>
+
+    </p:dialog>
+
+    <p:dialog header="View Message" widgetVar="viewMsg"  resizable="false" width="750" height="550" modal="true" showEffect="fade" hideEffect="fade">
+        <h:form id="currentMsgForm">
+            <h:panelGrid columns="2" cellspacing="5">
+                <h:outputLabel for="fromRepl" value="From: "/>
+                <p:inputText id="fromRepl" value="#{mailBean.selectedMail.from}" size="50" disabled="true" />
+                <h:outputLabel for="toRepl" value="To: "/>
+                <p:inputText id="toRepl" value="#{mailBean.selectedMail.to}" size="50" disabled="true" />
+                <h:outputLabel for="subjectRepl" value="Subject: "/>
+                <p:inputText id="subjectRepl" value="#{mailBean.selectedMail.subject}" size="50" disabled="true"/>
+                <h:outputLabel for="dateRepl" value="Date: "/>
+                <p:inputText id="dateRepl" value="#{mailBean.selectedMail.date}" size="50" disabled="true"/>
+            </h:panelGrid>
+
+            <p:separator/>
+
+            <p:editor widgetVar="editor" width="715" height="355" value="#{mailBean.selectedMail.body}"/>
+
+            <p:separator/>
+
+            <p:commandButton value="Reply" actionListener="#{dataBean.messageReply}" oncomplete="newMsg.show();" update=":newMsgForm"/>
+            <p:commandButton value="Move to..." oncomplete="moveMsg.show()"/>
+            <p:commandButton value="Delete" actionListener="#{dataBean.messageDelete}" oncomplete="viewMsg.hide();" ajax="true" update=":tableView, :msg"/>
+            <p:commandButton value="Back" onclick="viewMsg.hide();"/>
+        </h:form>
+    </p:dialog>
+
+    <p:dialog header="Choose folder for moving" widgetVar="moveMsg" resizable="false">
+        <h:form id="moveMsgForm">
+            <h:panelGrid columns="2" style="margin-bottom: 10px">
+                <h:outputLabel for="folderListMove" value="Choose folder: "/>
+                <p:selectOneMenu id="folderListMove" value="#{mailBean.currentFolder}">
+                    <f:selectItems value="#{mailBean.fullFolderList}"/>
+                    <p:ajax event="change" update="@this"/>
+                </p:selectOneMenu>
+            </h:panelGrid>
+            <div style="text-align: center">
+                <p:commandButton value="Move" actionListener="#{dataBean.messageMove}" oncomplete="moveMsg.hide();" ajax="true" update=":tableView, :msg"/>
+            </div>
+        </h:form>
+    </p:dialog>
+
+    <p:growl id="msg"/>
+</h:body>
+
+</html>

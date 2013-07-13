@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: eugene
+  Date: 6/28/13
+  Time: 5:33 PM
+-->
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Registration</title>
+    <h:outputStylesheet library="login/css" name="style.css"/>
+    <h:outputStylesheet library="client" name="styles.css"/>
+    <style type="text/css">
+        .alert{
+
+            margin: 20px 0;
+            font-size: 11px;
+            color: red;
+            text-align: center;
+        }
+        form{
+            display: inline;
+            float: inherit;
+        }
+        div{
+            clear:both;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <div class="login">
+        <h:form>
+            <p>
+                <h:outputLabel for="first_name">First Name: <h:message class="alert" for="first_name"/></h:outputLabel>
+                <p:inputText id="first_name" value="#{userBean.first_name}">
+                    <f:validator validatorId="fNameValidation"/>
+                </p:inputText>
+            </p>
+            <p>
+                <h:outputLabel for="last_name">Last Name: <h:message class="alert" for="last_name"/></h:outputLabel>
+                <p:inputText id="last_name" value="#{userBean.last_name}">
+                    <f:validator validatorId="lNameValidation"/>
+                </p:inputText>
+            </p>
+            <p>
+                <h:outputLabel for="username">User: <h:message class="alert" for="username"/></h:outputLabel>
+                <p:inputText id="username" value="#{userBean.username}">
+                    <f:validator validatorId="uNameValidation"/>
+                </p:inputText>
+                <p:watermark for="username" value="example@demail.com" />
+            </p>
+            <p>
+                <h:outputLabel for="mobile_phone">Phone: <h:message class="alert" for="mobile_phone"/></h:outputLabel>
+                <p:inputText id="mobile_phone" value="#{userBean.mobile_phone}">
+                    <f:validator validatorId="phoneValidation"/>
+                </p:inputText>
+                <p:watermark for="mobile_phone" value="+79123456789"/>
+            </p>
+            <p>
+                <h:outputLabel for="password">Password: <h:message class="alert" for="password"/></h:outputLabel>
+                <p:password id="password" value="#{userBean.password}" binding="#{passwordComponent}">
+                    <f:validator validatorId="passValidation"/>
+                </p:password>
+            </p>
+            <p>
+                <h:outputLabel for="rt_password">Retype password: <h:message class="alert" for="rt_password"/></h:outputLabel>
+                <p:password id="rt_password" value="#{registrationBean.rtPassword}">
+                    <f:validator validatorId="rtPassValidation"/>
+                    <f:attribute name="passwordComponent" value="#{passwordComponent}"/>
+                </p:password>
+            </p>
+            <p>
+                <h:outputLabel for="popupCal">Birthday: <h:message class="alert" for="popupCal"/></h:outputLabel>
+                <p:calendar value="#{userBean.birth_day}" id="popupCal">
+                    <f:validator validatorId="bDateValidation"/>
+                </p:calendar>
+            </p>
+            <br/>
+            <h:message class="alert" for="profileReg"/>
+            <h:message class="alert" for="captcha"/>
+            <p:captcha id="captcha" language="en" theme="white" label="Captcha" validatorMessage="Captcha is wrong." requiredMessage="Captcha should be entered."/>
+            <br/>
+            <p:commandButton ajax="false" id="profileReg" update="@form" binding="#{registrationBean.profileReg}" action="#{registrationBean.add}" value="Registration"/>
+        </h:form>
+        <h:form><p:commandButton action="index?faces-redirect=true" value="Go Back" /></h:form>
+    </div>
+</h:body>
+
+</html>

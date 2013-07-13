@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+		  http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+           version="2.5">
+
+    <filter>
+        <filter-name>SessionFilter</filter-name>
+        <filter-class>com.tsystems.demail.Filters.SessionFilter</filter-class>
+        <init-param>
+            <param-name>not-avoid-urls</param-name>
+            <param-value>/login.jsf,/newmail.jsf,/delmail.jsf,/client.jsf</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>SessionFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>ClientFilter</filter-name>
+        <filter-class>com.tsystems.demail.Filters.ClientFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>ClientFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    
+    <welcome-file-list>
+        <welcome-file>index.jsf</welcome-file>
+    </welcome-file-list>
+
+    <context-param>
+        <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
+        <param-value>6Ldby-MSAAAAAMln9XKB3aQWOKabizxkggNE3zh_</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
+        <param-value>6Ldby-MSAAAAAGFw9WMctOyIVlBamDIleLx5tmNI</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>cupertino</param-value>
+    </context-param>
+
+
+</web-app>

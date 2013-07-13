@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: eugene
+  Date: 6/29/13
+  Time: 3:27 AM
+-->
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Welcome to DEMail</title>
+    <h:outputStylesheet library="login/css" name="style.css"/>
+    <h:outputStylesheet library="client" name="styles.css"/>
+    <style type="text/css">
+        #create{
+            display: inline;
+            float: inherit;
+        }
+        #delete{
+            display: inline;
+            float: inherit;
+        }
+        #login{
+            display: inline;
+            float: inherit;
+        }
+        #logout{
+            display: inline;
+            float: inherit;
+        }
+        div{
+            clear:both;
+        }
+        .select-menu{
+            margin: 5px;
+            padding: 0 10px;
+            width: 200px;
+            height: 34px;
+            color: #404040;
+            background: white;
+            border: 1px solid;
+            border-color: #c4c4c4 #d1d1d1 #d4d4d4;
+            border-radius: 2px;
+            outline: 5px solid #eff4f7;
+            -moz-outline-radius: 3px;
+            @include box-shadow(inset 0 1px 3px rgba(black, .12));
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <div class="login" style="text-align: center; width: 500px; height: 165px; margin-top: 5%">
+        <p>Welcome back, #{userBean.first_name} #{userBean.last_name}</p>
+        <p>What are you want to do?</p>
+        <br/>
+        <h:form>
+            <h:selectOneMenu id="mailList" styleClass="select-menu" value="#{userBean.username}">
+                <f:selectItems value="#{userBean.userList}" />
+                <p:ajax event="change" update="@this"/>
+            </h:selectOneMenu>
+        </h:form>
+        <br/>
+        <h:form id="create"><p:commandButton action="newmail?faces-redirect=true" value="Create new mail" /></h:form>
+        <h:form id="delete"><p:commandButton action="delmail?faces-redirect=true" value="Delete" /></h:form>
+        <h:form id="login"><p:commandButton action="#{dataBean.loginMail}" value="Login" /></h:form>
+        <h:form id="logout"><p:commandButton action="#{dataBean.logoutProfile}" value="Logout" /></h:form>
+    </div>
+</h:body>
+
+</html>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Created by IntelliJ IDEA.
+  User: eugene
+  Date: 7/2/13
+  Time: 1:34 AM
+-->
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Delete confirmation</title>
+    <h:outputStylesheet library="login/css" name="style.css"/>
+    <h:outputStylesheet library="client" name="styles.css"/>
+    <style type="text/css">
+        form{
+            display: inline;
+            float: inherit;
+        }
+        div{
+            clear:both;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <div class="login" style="text-align: center; margin-top: 5%">
+        Are you sure you want to delete #{userBean.username}?
+        <br/>
+        <br/>
+        <h:form><p:commandButton action="#{dataBean.deleteMail}" value="Yes"/></h:form>
+        <h:form><p:commandButton action="#{dataBean.loginProfile}" value="No"/></h:form>
+    </div>
+</h:body>
+
+</html>

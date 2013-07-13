@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+
+<h:head>
+    <title>DEMail</title>
+    <h:outputStylesheet library="login/css" name="style.css"/>
+    <h:outputStylesheet library="client" name="styles.css"/>
+    <style type="text/css">
+        .alert{
+            margin: 20px 0;
+            font-size: 11px;
+            color: red;
+            text-align: center;
+        }
+        .ui-state-disabled {
+            cursor: default !important;
+        }
+    </style>
+</h:head>
+
+<h:body>
+    <div class="login" style="margin-top: 5%">
+        <h1>DEMail</h1>
+        <h:form>
+            <p>
+                <h:outputLabel for="phone">Phone: <h:message class="alert" for="phone"/> <h:message class="alert" for="phoneLogin"/></h:outputLabel>
+                <p:inputText id="phone" value="#{userBean.mobile_phone}">
+                    <f:validator validatorId="phoneValidation"/>
+                </p:inputText>
+                <p:watermark for="phone" value="+79123456789"/>
+            </p>
+            <p>
+                <h:outputLabel for="password">Password: <h:message class="alert" for="password"/></h:outputLabel>
+                <p:password id="password" value="#{userBean.password}">
+                    <f:validator validatorId="passValidation"/>
+                </p:password>
+            </p>
+            <p style="text-align: center">
+                <p:commandButton id="phoneLogin" update="@form" binding="#{mailBean.buttonAction}" value="Login" action="#{dataBean.loginProfile}"/>
+            </p>
+        </h:form>
+    </div>
+    <h:form style="text-align: center" class="login-help">
+        <p><h:commandLink action="registration?faces-redirect=true" value="Create Account"></h:commandLink></p>
+        <p><h:commandLink action="forgot?faces-redirect=true" value="Forgot Password"></h:commandLink></p>
+    </h:form>
+</h:body>
+
+</html>
