@@ -7,5 +7,5 @@ public class Localization {
     public final String SPAM = "Spam";
     public final String TRASH = "Trash";
     public final String USERFOLDER = "Folders";
-    public final String SYSTEM = "DEMAIL";
+    public final String SYSTEM = "DeMail";
 }

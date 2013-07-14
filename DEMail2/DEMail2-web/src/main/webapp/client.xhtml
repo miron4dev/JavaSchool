@@ -12,7 +12,7 @@
 <html xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
 
 <h:head>
-    <title>DEMail Client</title>
+    <title>DeMail Client</title>
     <h:outputStylesheet library="client" name="styles.css"/>
     <link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/resources/client/favicon.ico" />
     <style type="text/css">
@@ -141,7 +141,7 @@
 
             <h:panelGrid columns="2" style="margin-bottom:10px">
                 <h:outputLabel for="foldername" value="New Folder:"/>
-                <p:inputText id="foldername" value="#{mailBean.temp}" required="true" requiredMessage="Folder name cannot be null."/>
+                <p:inputText id="foldername" value="#{mailBean.temp}" />
             </h:panelGrid>
             <div style="text-align: center">
             <p:commandButton value="Create" actionListener="#{dataBean.folderCreate}" oncomplete="newFolder.hide();" update=":leftForm, :deleteForm, :renameForm, :moveMsgForm, :msg"/>
@@ -158,7 +158,7 @@
                     <p:ajax event="change" update="@this"/>
                 </p:selectOneMenu>
                 <h:outputLabel for="newfoldername" value="New folder name: "/>
-                <p:inputText id="newfoldername" value="#{mailBean.temp}" required="true" requiredMessage="Folder name cannot be null."/>
+                <p:inputText id="newfoldername" value="#{mailBean.temp}"/>
             </h:panelGrid>
             <div style="text-align: center">
             <p:commandButton value="Rename" actionListener="#{dataBean.folderRename}" oncomplete="renameFolder.hide();" update=":leftForm, :renameForm, :deleteForm, :moveMsgForm, :msg"/>
@@ -187,7 +187,7 @@
 
             <h:panelGrid columns="2" cellspacing="5">
                 <h:outputLabel for="to" value="To: "/>
-                <p:inputText id="to" size="50" value="#{messageBean.to}" required="true" requiredMessage="Field 'To' cannot be null."/>
+                <p:inputText id="to" size="50" value="#{messageBean.to}"/>
 
                 <h:outputLabel for="subject" value="Subject: "/>
                 <p:inputText id="subject" size="50" value="#{messageBean.subject}"/>
@@ -195,7 +195,7 @@
 
             <p:separator/>
 
-            <p:editor widgetVar="editor" width="715" height="415" value="#{messageBean.body}" required="true" requiredMessage="Message cannot be null."/>
+            <p:editor widgetVar="editor" width="715" height="415" value="#{messageBean.body}"/>
 
             <p:separator/>
 
@@ -228,7 +228,7 @@
             <p:commandButton value="Reply" actionListener="#{dataBean.messageReply}" oncomplete="newMsg.show();" update=":newMsgForm"/>
             <p:commandButton value="Move to..." oncomplete="moveMsg.show()"/>
             <p:commandButton value="Delete" actionListener="#{dataBean.messageDelete}" oncomplete="viewMsg.hide();" ajax="true" update=":tableView, :msg"/>
-            <p:commandButton value="Back" onclick="viewMsg.hide();"/>
+            <p:commandButton value="Back" onclick="viewMsg.hide();" update=":currentMsgForm"/>
         </h:form>
     </p:dialog>
 

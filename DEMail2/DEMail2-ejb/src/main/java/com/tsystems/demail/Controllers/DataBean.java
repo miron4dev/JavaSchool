@@ -146,10 +146,13 @@ public class DataBean{
 
     public void folderCreate(){
         String alert = null;
-        if(mailBean.getTemp().equals(new Localization().USERFOLDER)){
+        if(mailBean.getTemp().length() == 0){
+            alert = "Folder name cannot be null";
+        }
+        else if(mailBean.getTemp().equals(new Localization().USERFOLDER)){
             alert = "You cannot use the system folder name.";
         }
-        else if(folderLowerCase().contains(mailBean.getTemp()) || !dataService.folderCreateChecking(userBean.getUsername(), mailBean.getTemp())){
+        else if(mailBean.getFullFolderList().contains(mailBean.getTemp()) || !dataService.folderCreateChecking(userBean.getUsername(), mailBean.getTemp())){
             alert = "Folder with that name already exist.";
         }
         else {
@@ -167,10 +170,13 @@ public class DataBean{
 
     public void folderRename(){
         String alert = null;
-        if(mailBean.getTemp().equals(new Localization().USERFOLDER)){
+        if(mailBean.getTemp().length() == 0){
+            alert = "Folder name cannot be null";
+        }
+        else if(mailBean.getTemp().equals(new Localization().USERFOLDER)){
             alert = "You cannot using system folder name.";
         }
-        else if(folderLowerCase().contains(mailBean.getTemp()) || !dataService.folderRenameChecking(userBean.getUsername(), mailBean.getCurrentFolder(), mailBean.getTemp())){
+        else if(mailBean.getFullFolderList().contains(mailBean.getTemp()) || !dataService.folderRenameChecking(userBean.getUsername(), mailBean.getCurrentFolder(), mailBean.getTemp())){
             alert = "Folder with that name already exist.";
         }
         else{
@@ -189,6 +195,9 @@ public class DataBean{
     }
 
     public void folderDelete(){
+        if(mailBean.getCurrentFolder().length() == 0){
+            return;
+        }
         dataDAO.deleteFolder(userBean.getUsername(), mailBean.getCurrentFolder());
         List userList = mailBean.getFolderList();
         List folderList = mailBean.getFullFolderList();
@@ -199,13 +208,13 @@ public class DataBean{
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Folder was successfully deleted."));
     }
 
-    public List folderLowerCase(){
-        List folderList = mailBean.getFullFolderList();
-        for(int i = 0; i < folderList.size(); i++){
-            folderList.add(folderList.remove(i).toString().toLowerCase());
-        }
-        return folderList;
-    }
+//    public List folderLowerCase(){
+//        List folderList = mailBean.getFullFolderList();
+//        for(int i = 0; i < folderList.size(); i++){
+//            folderList.add(folderList.remove(i).toString().toLowerCase());
+//        }
+//        return folderList;
+//    }
 
     public void getMessages(NodeSelectEvent event){
         if(event.getTreeNode().toString().equals(new Localization().USERFOLDER)){
@@ -218,7 +227,10 @@ public class DataBean{
 
     public void messageSend(){
         String alert = null;
-        if(messageBean.getTo().equals(new Localization().SYSTEM)){
+        if(messageBean.getTo().length() == 0 || messageBean.getBody().length() == 0){
+            alert="'To' field and message body cannot be null";
+        }
+        else if(messageBean.getTo().equals(new Localization().SYSTEM)){
             alert="You cannot reply to this message.";
         }
         else if(!new Validator().userNameChecking(messageBean.getTo())){
