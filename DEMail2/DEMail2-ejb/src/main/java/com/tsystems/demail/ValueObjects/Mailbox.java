@@ -22,9 +22,6 @@ public class Mailbox {
     @Inject
     private MailBean mailBean;
 
-    @EJB
-    private MessageBean messageBean;
-
     @PostConstruct
     public void init() {
         Localization pp = new Localization();

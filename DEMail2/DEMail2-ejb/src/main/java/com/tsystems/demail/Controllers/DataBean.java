@@ -4,7 +4,6 @@ import com.tsystems.demail.Beans.MailBean;
 import com.tsystems.demail.Beans.MessageBean;
 import com.tsystems.demail.Beans.UserBean;
 import com.tsystems.demail.Constants.Localization;
-import com.tsystems.demail.Constants.Parameters;
 import com.tsystems.demail.DAO.DataDAO;
 import com.tsystems.demail.Service.DataService;
 import com.tsystems.demail.Service.LoginService;
@@ -19,6 +18,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 @Named
 public class DataBean{
@@ -29,7 +31,7 @@ public class DataBean{
     @Inject
     private MailBean mailBean;
     
-    @EJB
+    @Inject
     private MessageBean messageBean;
 
     @EJB
@@ -44,17 +46,26 @@ public class DataBean{
     @EJB
     private DataService dataService;
     
+    private Logger logger;
+    
+    @PostConstruct
+    public void init(){
+        logger =  Logger.getLogger(getClass().getName());
+        BasicConfigurator.configure();    
+    }
 
     public String forgotPassword(){
         boolean ans = dataService.passwordReturning(userBean.getMobile_phone());
         String alert = null;
         
-        if(ans == false)
+        if(ans == false){
             alert = "Phone is not registered or user not have secondary mail.";
+            logger.warn("User " + userBean.getMobile_phone() + " unsuccessfully tried to return password.");
+        }
         else
         {
            alert = "Password sent to your mail.";
-               
+           logger.info("User " + userBean.getMobile_phone() + " was returned password to his secondary mail.");
         }
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(mailBean.getButtonAction().getClientId(context), new FacesMessage(alert));
@@ -65,18 +76,21 @@ public class DataBean{
         if(!mailBean.getTemp().equals(userBean.getPassword())){
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(mailBean.getButtonAction().getClientId(context), new FacesMessage("Password is wrong."));
+            logger.warn("Failed attempt to creating new mail for user " + userBean.getMobile_phone() + ": wrong password.");
             return null;
         }
 
         if(!registrationService.mailChecking(userBean.getUsername(), userBean.getMobile_phone())){
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(mailBean.getButtonAction().getClientId(context), new FacesMessage("User with that name is already exist."));
+            logger.warn("Failed attempt to creating new mail for user " + userBean.getMobile_phone() + ": mail is already exist.");
             return null;
         }
         else {
             List<String> userList = userBean.getUserList();
             userList.add(userBean.getUsername());
             userBean.setUserList(userList);
+            logger.info("User " + userBean.getMobile_phone() + " created new mail with name " + userBean.getUsername());
             return loginProfile();
         }
     }
@@ -86,6 +100,7 @@ public class DataBean{
         List<String> userList = userBean.getUserList();
         userList.remove(userBean.getUsername());
         userBean.setUserList(userList);
+        logger.info("User " + userBean.getMobile_phone() + " deleted his mail with name " + userBean.getUsername());
         return loginProfile();
     }
 
@@ -95,6 +110,7 @@ public class DataBean{
         {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(mailBean.getButtonAction().getClientId(context), new FacesMessage("Phone or password is wrong."));
+            logger.warn("Failed attempt to login to " + userBean.getMobile_phone());
             return null;
         }
         else
@@ -111,6 +127,7 @@ public class DataBean{
                 userBean.setUsername(data.get(1).toString());
             userBean.setUserList(userList);
             userBean.setProfileLoggedIn(true);
+            logger.info("User " + userBean.getMobile_phone() + " is logged in");
             return "login.jsf?faces-redirect=true";
         }
     }
@@ -130,17 +147,20 @@ public class DataBean{
         mailBean.setTemp(null);
         mailBean.setSelectedFolderName(new Localization().INBOX);
         userBean.setMailLoggedIn(true);
+        logger.info("User " + userBean.getMobile_phone() + "logged in to " + userBean.getUsername());
         return "client.jsf?faces-redirect=true";
     }
 
     public String logoutProfile(){
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         userBean.setProfileLoggedIn(false);
+        logger.info("User " + userBean.getMobile_phone() + " is logged out");
         return "index.jsf?faces-redirect=true";
     }
 
     public String logoutMail(){
         userBean.setMailLoggedIn(false);
+        logger.info(userBean.getUsername() + " user is logged out");
         return "login.jsf?faces-redirect=true";
     }
 
@@ -163,9 +183,11 @@ public class DataBean{
             folderList.add(mailBean.getTemp());
             mailBean.setFolderList(userList);
             mailBean.setFullFolderList(folderList);
+            logger.info("Folder " + mailBean.getTemp() + " for " + userBean.getUsername() + " was created.");
         }
         mailBean.setTemp(null);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(alert));
+        logger.warn("Failed to create new folder " + mailBean.getTemp() + " for " + userBean.getUsername());
     }
 
     public void folderRename(){
@@ -189,9 +211,11 @@ public class DataBean{
             folderList.add(mailBean.getTemp());
             mailBean.setFolderList(userList);
             mailBean.setFullFolderList(folderList);
+            logger.info("Folder " + mailBean.getCurrentFolder() + " was renamed to " + mailBean.getTemp() + " for " + userBean.getUsername());
         }
         mailBean.setTemp(null);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(alert));
+        logger.warn("Failed to rename folder " + mailBean.getCurrentFolder() + " to " + mailBean.getTemp() + " for " + userBean.getUsername());
     }
 
     public void folderDelete(){
@@ -206,16 +230,9 @@ public class DataBean{
         mailBean.setFullFolderList(folderList);
         mailBean.setFolderList(userList);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Folder was successfully deleted."));
+        logger.info("Folder " + mailBean.getCurrentFolder() + " for " + userBean.getUsername() + " was deleted");
     }
-
-//    public List folderLowerCase(){
-//        List folderList = mailBean.getFullFolderList();
-//        for(int i = 0; i < folderList.size(); i++){
-//            folderList.add(folderList.remove(i).toString().toLowerCase());
-//        }
-//        return folderList;
-//    }
-
+    
     public void getMessages(NodeSelectEvent event){
         if(event.getTreeNode().toString().equals(new Localization().USERFOLDER)){
             return;
@@ -241,6 +258,7 @@ public class DataBean{
         }
         else{
             alert="Message sent!";
+            logger.info(userBean.getUsername() + " sent new message to " + messageBean.getTo());
         }
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(alert));
     }
@@ -255,12 +273,14 @@ public class DataBean{
         dataDAO.deleteMessage(mailBean.getSelectedMail().getId());
         messageUpdate();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message was successfully deleted."));
+        logger.info(userBean.getUsername() + " deleted message with id=" + mailBean.getSelectedMail().getId());
     }
 
     public void messageMove(){
         dataDAO.moveMessage(mailBean.getCurrentFolder(), mailBean.getSelectedMail().getId());
         messageUpdate();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Message was moved to " + mailBean.getCurrentFolder()));
+        logger.info(userBean.getUsername() + " moved message with id=" + mailBean.getSelectedMail().getId() + " to " + mailBean.getCurrentFolder() + " folder");
     }
 
     public void messageUpdate(){
@@ -286,5 +306,7 @@ public class DataBean{
         }
         mailBean.setMessageList(dataDAO.getMessages(userBean.getUsername(), mailBean.getSelectedFolderName()));
         mailBean.setSelectedMail(null);
+        logger.info(userBean.getUsername() + "  was clicked 'Refresh'");
     }
+    
 }

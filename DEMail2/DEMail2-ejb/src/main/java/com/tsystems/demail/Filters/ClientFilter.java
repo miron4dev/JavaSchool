@@ -19,7 +19,7 @@ public class ClientFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         String url = request.getServletPath();
 
-        if (url.equals("/client.jsf") && !userBean.isMailLoggedIn()){
+        if (url.equals("/client.jsf") && !userBean.isMailLoggedIn() || url.equals("/registration.jsf") && userBean.isProfileLoggedIn()){
             response.sendRedirect(request.getContextPath() + "/login.jsf");
         }
         else filterChain.doFilter(request, response);

@@ -1,13 +1,13 @@
 package com.tsystems.demail.Beans;
 
+import java.io.Serializable;
 import javax.inject.Named;
 import java.util.Date;
-import javax.ejb.Stateless;
-import javax.faces.component.UIComponent;
+import javax.enterprise.context.SessionScoped;
 
 @Named
-@Stateless
-public class MessageBean{
+@SessionScoped
+public class MessageBean implements Serializable{
 
     private String from;
     private String to;
